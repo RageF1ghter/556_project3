@@ -3,6 +3,15 @@
 
 #include "RoutingProtocol.h"
 #include "Node.h"
+#include <unordered_map>
+using namespace std;
+
+struct RoutingEntry {
+    unsigned short destination;        // Destination router ID
+    unsigned short cost;               // Cost to reach this destination
+    unsigned short next_hop;           // Next hop router ID
+    unsigned int last_update_time;     // The last time this entry was updated
+};
 
 class RoutingProtocolImpl : public RoutingProtocol {
   public:
@@ -38,6 +47,28 @@ class RoutingProtocolImpl : public RoutingProtocol {
 
  private:
     Node *sys; // To store Node object; used to access GSR9999 interfaces 
+    unsigned short router_id;
+    unsigned short num_ports;
+    eProtocolType protocol_type;
+    unsigned int dv_update_interval;   // Interval for periodic DV updates (ms)
+    unsigned int neighbor_timeout;     // Timeout to consider a neighbor dead (ms)
+    unsigned int last_dv_update_time;  // Last time a DV update was sent
+
+    unordered_map<unsigned short, RoutingEntry> dv_table; // Key: dest., val: dest, cost, next hop, and last_update_time
+    unordered_map<unsigned short, unsigned int> neighbors;// Key: router id, val: timestamp
+    unordered_map<int, unsigned short> neighbour_ports; // Key: port number, val: neighbour's router id.
+
+
+    void sendDvUpdate();
+    void sendPing();
+    void handleNeighborTimeout();
+    void cleanExpiredEntry();
+    void processPing(unsigned short port, void *packet, unsigned short size);
+    void processPong(unsigned short port, void *packet, unsigned short size);
+    void processDV(unsigned short port, void *packet, unsigned short size);
+    void processLS(unsigned short port, void *packet, unsigned short size);
+
+    
 };
 
 #endif

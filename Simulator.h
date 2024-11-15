@@ -20,14 +20,14 @@ struct int_pair {
 
 typedef struct int_pair pr;
 
-namespace __gnu_cxx
-{
+// namespace __gnu_cxx
+// {
   struct hash_pair {
     size_t operator()(const pr & one) const {
       return hash<int>()(one.first) + hash<int>()(one.second);
     }
   };
-}
+// }
 
 struct equal_pair {
   bool operator()(const pr one, const pr two) const {
