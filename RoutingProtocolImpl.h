@@ -56,13 +56,13 @@ class RoutingProtocolImpl : public RoutingProtocol {
 
     unordered_map<unsigned short, RoutingEntry> dv_table; // Key: dest., val: dest, cost, next hop, and last_update_time
     unordered_map<unsigned short, unsigned int> neighbors;// Key: router id, val: timestamp
-    unordered_map<int, unsigned short> neighbour_ports; // Key: port number, val: neighbour's router id.
+    unordered_map<unsigned short, int> neighbor_ports; // Key: router id, val: port.
 
 
     void sendDvUpdate();
     void sendPing();
     void handleNeighborTimeout();
-    void cleanExpiredEntry();
+    // void cleanExpiredEntry();
     void processPing(unsigned short port, void *packet, unsigned short size);
     void processPong(unsigned short port, void *packet, unsigned short size);
     void processDV(unsigned short port, void *packet, unsigned short size);

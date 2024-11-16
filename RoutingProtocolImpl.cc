@@ -56,7 +56,7 @@ void RoutingProtocolImpl::handle_alarm(void *data) {
       // clean up expired routing entries
       if(alarm_type == 2){
         handleNeighborTimeout();
-        cleanExpiredEntry();
+        // cleanExpiredEntry();
         sys->set_alarm(this, 1000, (void*)2); // Reschedule in 1 seconds
       }
     }
@@ -77,8 +77,8 @@ void RoutingProtocolImpl::recv(unsigned short port, void *packet, unsigned short
   ePacketType packet_type = (ePacketType)ntohs(*(unsigned short*)packet);
   switch (packet_type){
     case DATA:
-      // 不知道要干嘛
-      free(packet);
+      // transmit packet?
+      
       break;
     case PING:
       processPing(port, packet, size);
@@ -103,8 +103,8 @@ void RoutingProtocolImpl::recv(unsigned short port, void *packet, unsigned short
 // add more of your own code
 // update routing table to neighbors
 void RoutingProtocolImpl::sendDvUpdate() {
-    for (unsigned short port = 0; port < num_ports; port++) {
-        unsigned short neighbor = neighbour_ports[port];
+    for (auto& neighbor: neighbor_ports) {
+        unsigned short neighbor_port = neighbor_ports[neighbor.first];
         vector<pair<unsigned short, unsigned short>> dv_entries;
 
         // Exclude the router itself and unreachable routers
@@ -135,8 +135,8 @@ void RoutingProtocolImpl::sendDvUpdate() {
         packet_data[5] = router_id & 0xFF;          // Low byte
 
         // Destination ID (2 bytes)
-        packet_data[6] = (neighbor >> 8) & 0xFF;    // High byte
-        packet_data[7] = neighbor & 0xFF;           // Low byte
+        packet_data[6] = (neighbor.first >> 8) & 0xFF;    // High byte
+        packet_data[7] = neighbor.first & 0xFF;           // Low byte
 
         // Payload (Routing Entries)
         size_t offset = 8;
@@ -156,7 +156,7 @@ void RoutingProtocolImpl::sendDvUpdate() {
         }
 
         // Send the DV update packet
-        sys->send(port, packet, (unsigned short)dv_packet_size);
+        sys->send(neighbor_port, packet, (unsigned short)dv_packet_size);
     }
     last_dv_update_time = sys->time();
 }
@@ -205,8 +205,6 @@ void RoutingProtocolImpl::processPing(unsigned short port, void *packet, unsigne
   unsigned char *packet_data = (unsigned char*)packet;
   packet_data[0] = PONG;
 
-  // Extract source ID from the PING packet
-  unsigned short original_source_id = ((unsigned short)packet_data[4] << 8) | packet_data[5];
   // copy source to dest.
   packet_data[6] = packet_data[4];
   packet_data[7] = packet_data[5];
@@ -215,4 +213,83 @@ void RoutingProtocolImpl::processPing(unsigned short port, void *packet, unsigne
   packet_data[5] = router_id & 0xFF;          // Low byte
   // ts remains unchanged
   sys->send(port, packet, size);
+}
+
+// recv PONG and update the neighbor_ports map
+void RoutingProtocolImpl::processPong(unsigned short port, void *packet, unsigned short size) {
+  if (size < 12) {
+      // Packet too small, discard
+      free(packet);
+      return;
+  }
+
+  unsigned char *packet_data = (unsigned char*)packet;
+
+  // Extract neighbor's ID from the PONG packet (source ID)
+  unsigned short neighbor_id = ((unsigned short)packet_data[4] << 8) | packet_data[5];
+
+  // Extract the timestamp from the payload
+  unsigned int sent_time = ((unsigned int)packet_data[8] << 24) |
+                            ((unsigned int)packet_data[9] << 16) |
+                            ((unsigned int)packet_data[10] << 8) |
+                            ((unsigned int)packet_data[11]);
+
+  // Compute RTT
+  unsigned int current_time = sys->time();
+  unsigned int rtt = current_time - sent_time;
+
+  // Update neighbor's last heard time
+  neighbors[neighbor_id] = current_time;
+
+  // Update neighbor-to-port mapping
+  neighbor_ports[neighbor_id] = port;
+
+  // Free the packet memory
+  free(packet);
+}
+
+// clean dead neighbor
+void RoutingProtocolImpl::handleNeighborTimeout(){
+  // id, timestamp
+  for(auto& neighbor: neighbors){
+    unsigned int curTime = sys->time();
+    if(curTime - neighbor.second > neighbor_timeout){
+      // clean the dv_table
+      for(auto& row: dv_table){
+        if(row.second.next_hop == neighbor.first){
+          row.second.cost = INFINITY_COST;
+          row.second.last_update_time = curTime;
+        }
+      }
+      // clean the neighbor timeout table
+      neighbors.erase(neighbor.first);
+    }
+  }
+}
+
+// update the dv table
+void RoutingProtocolImpl::processDV(unsigned short port, void *packet, unsigned short size){
+  unsigned char *packet_data = (unsigned char*)packet;
+  unsigned short neighbor_id = ((unsigned short)packet_data[4] << 8) | packet_data[5];
+  unsigned short self_id = ((unsigned short)packet_data[6] << 8) | packet_data[7];
+
+  if(self_id != router_id){
+    cout<<"Destination id != current router's id"<<endl;
+    return;
+  }
+
+  unsigned short num_entries = ((unsigned short)packet_data[2] << 8) | packet_data[3];
+
+  for(int i = 0; i < num_entries; i++){
+    unsigned short node_id = ((unsigned short)packet_data[8 + 4*i] << 8) | packet_data[9 + 4*i];
+    unsigned short cost = ((unsigned short)packet_data[10 + 4*i] << 8) | packet_data[11 + 4*i];
+    unsigned short original_cost = dv_table[node_id].cost;
+    // cur -> neighbor -> dest < cur->dest
+    // update the cost and next-hop
+    if(cost + dv_table[neighbor_id].cost < original_cost){
+      dv_table[node_id].cost = cost + dv_table[neighbor_id].cost;
+      dv_table[node_id].next_hop = neighbor_id;
+    }
+  }
+
 }
