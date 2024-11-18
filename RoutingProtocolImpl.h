@@ -68,7 +68,11 @@ class RoutingProtocolImpl : public RoutingProtocol {
     void processDV(unsigned short port, void *packet, unsigned short size);
     void processLS(unsigned short port, void *packet, unsigned short size);
 
-    
+    void passPacket(void *packet, unsigned short size);
+
+    //helper
+    void printTheTable();
+    void printThePorts();
 };
 
 #endif
