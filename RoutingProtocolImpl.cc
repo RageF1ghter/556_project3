@@ -45,6 +45,7 @@ void RoutingProtocolImpl::init(unsigned short num_ports, unsigned short router_i
 
 void RoutingProtocolImpl::handle_alarm(void *data) {
   if(protocol_type == P_DV){
+    // send the dv_table to neighbors every 30s
     if(data == nullptr){
       sendDvUpdate();
       sys->set_alarm(this, dv_update_interval, nullptr);
@@ -53,13 +54,13 @@ void RoutingProtocolImpl::handle_alarm(void *data) {
       // perdoicly send ping
       if(alarm_type == 1){
         sendPing();
-        sys->set_alarm(this, 10000, (void*)1);  // send PING in 10 seconds
+        sys->set_alarm(this, 10000, (void*)1); // 10s
       }
-      // clean up expired routing entries
+      // check the dv_table every 1s, clean up expired routing entries 
       if(alarm_type == 2){
         handleNeighborTimeout();
         // cleanExpiredEntry();
-        sys->set_alarm(this, 1000, (void*)2); // Reschedule in 1 seconds
+        sys->set_alarm(this, 1000, (void*)2); // 1s
       }
     }
   }else{
@@ -76,10 +77,12 @@ void RoutingProtocolImpl::recv(unsigned short port, void *packet, unsigned short
   switch (packet_type){
     case DATA:
       // transmit packet
+      printTheTable();
+      printThePorts();
       passPacket(packet, size);
       break;
     case PING:
-      cout<<"sending ping packet"<<endl;
+      // cout<<"sending ping packet"<<endl;
       processPing(port, packet, size);
       break;
     case PONG:
@@ -112,7 +115,7 @@ void RoutingProtocolImpl::sendDvUpdate() {
           unsigned short cost = row.second.cost;
 
           // Exclude self and unreachable nodes
-          if (node_id != router_id && cost != INFINITY_COST) {
+          if (node_id != router_id && cost != 65535) {
               // Apply poison reverse
               if (row.second.next_hop == neighbor.first) {
                   cost = INFINITY_COST;
@@ -225,77 +228,115 @@ void RoutingProtocolImpl::processPing(unsigned short port, void *packet, unsigne
 
 // recv PONG and update the neighbor_ports map
 void RoutingProtocolImpl::processPong(unsigned short port, void *packet, unsigned short size) {
-  if (size < 12) {
-      // Packet too small, discard
-      free(packet);
-      return;
-  }
-
-  unsigned char *packet_data = (unsigned char*)packet;
-
-  // Extract neighbor's ID from the PONG packet (source ID)
-  unsigned short neighbor_id = ((unsigned short)packet_data[4] << 8) | packet_data[5];
-
-  // Extract the timestamp from the payload
-  unsigned int sent_time = ((unsigned int)packet_data[8] << 24) |
-                            ((unsigned int)packet_data[9] << 16) |
-                            ((unsigned int)packet_data[10] << 8) |
-                            ((unsigned int)packet_data[11]);
-
-  // Compute RTT
-  unsigned int current_time = sys->time();
-  unsigned int rtt = current_time - sent_time;
-
-  // Update neighbor's last heard time
-  neighbors[neighbor_id] = current_time;
-
-  // Update neighbor-to-port mapping
-  neighbor_ports[neighbor_id] = port;
-
-  // update the dv table if neighbor doesn't exist
-  if(dv_table.find(neighbor_id) == dv_table.end()){
-    cout<<neighbor_id<<" doesn't exits"<<endl;
-    dv_table[neighbor_id].destination = neighbor_id;
-    dv_table[neighbor_id].cost = rtt;
-    dv_table[neighbor_id].next_hop = neighbor_id;
-    dv_table[neighbor_id].last_update_time = current_time;
-  }
-  // update the cost
-  else{
-    unsigned int oldRtt = dv_table[neighbor_id].cost;
-    int diff = rtt - oldRtt;
-    for(auto& entry: dv_table){
-      if(entry.second.next_hop == neighbor_id){
-        entry.second.cost += diff;
-        entry.second.last_update_time = sys->time();
-      }
+    if (size < 12) {
+        // Packet too small, discard
+        free(packet);
+        return;
     }
-  }
-  
-  
 
-  // Free the packet memory
-  free(packet);
+    unsigned char *packet_data = (unsigned char*)packet;
+
+    // Extract neighbor's ID from the PONG packet (source ID)
+    unsigned short neighbor_id = ((unsigned short)packet_data[4] << 8) | packet_data[5];
+
+    // Extract the timestamp from the payload
+    unsigned int sent_time = ((unsigned int)packet_data[8] << 24) |
+                             ((unsigned int)packet_data[9] << 16) |
+                             ((unsigned int)packet_data[10] << 8) |
+                             ((unsigned int)packet_data[11]);
+
+    // Compute RTT
+    unsigned int current_time = sys->time();
+    unsigned int rtt = current_time - sent_time;
+    cout << "RTT to neighbor " << neighbor_id << ": " << rtt << endl;
+
+    // Update neighbor's last heard time
+    neighbors[neighbor_id] = current_time;
+
+    // Update neighbor-to-port mapping
+    neighbor_ports[neighbor_id] = port;
+
+    // Update the DV table
+    if (dv_table.find(neighbor_id) == dv_table.end()) {
+        // Neighbor doesn't exist in DV table, add it
+        cout << "Adding new neighbor " << neighbor_id << " to DV table" << endl;
+        dv_table[neighbor_id].destination = neighbor_id;
+        dv_table[neighbor_id].cost = rtt;
+        dv_table[neighbor_id].next_hop = neighbor_id;
+        dv_table[neighbor_id].last_update_time = current_time;
+    } else {
+        // Neighbor exists, update its cost and handle previously unreachable neighbors
+        unsigned int old_cost = dv_table[neighbor_id].cost;
+        if (old_cost == INFINITY_COST || rtt < old_cost) {
+          
+            // Update to the new RTT if previously unreachable or RTT has improved
+            cout << "Updating cost to neighbor " << neighbor_id << " in DV table" << endl;
+            dv_table[neighbor_id].cost = rtt;
+            dv_table[neighbor_id].next_hop = neighbor_id;
+            dv_table[neighbor_id].last_update_time = current_time;
+
+            // Update any dependent routes
+            for (auto& entry : dv_table) {
+                if (entry.second.next_hop == neighbor_id && entry.first != neighbor_id) {
+                    entry.second.cost = rtt + (entry.second.cost - old_cost);
+                    entry.second.last_update_time = current_time;
+                }
+            }
+
+            printTheTable();
+        }
+    }
+
+    // Free the packet memory
+    free(packet);
+
+    // Trigger a DV update
+    sendDvUpdate();
 }
+
 
 // clean dead neighbor
-void RoutingProtocolImpl::handleNeighborTimeout(){
-  // id, timestamp
-  for(auto& neighbor: neighbors){
+void RoutingProtocolImpl::handleNeighborTimeout() {
     unsigned int curTime = sys->time();
-    if(curTime - neighbor.second > neighbor_timeout){
-      // clean the dv_table
-      for(auto& row: dv_table){
-        if(row.second.next_hop == neighbor.first){
-          row.second.cost = INFINITY_COST;
-          row.second.last_update_time = curTime;
+    auto it = neighbors.begin();
+
+    while (it != neighbors.end()) {
+        // Check if the neighbor is timed out
+        if (curTime - it->second > neighbor_timeout) {
+            unsigned short neighbor_id = it->first;
+
+            // Clean the dv_table
+            for (auto& row : dv_table) {
+                if (row.second.next_hop == neighbor_id) {
+                    row.second.cost = INFINITY_COST;
+                    row.second.last_update_time = curTime;
+                }
+            }
+
+            // Clean the neighbor_ports map
+            if (neighbor_ports.find(neighbor_id) != neighbor_ports.end()) {
+                cout << "Cleaning neighbor from ports: " << neighbor_id << endl;
+                neighbor_ports.erase(neighbor_id);
+            }
+
+            // Erase the neighbor from the neighbors map
+            cout << "Cleaning neighbor from timeout: " << neighbor_id << endl;
+            it = neighbors.erase(it);
+
+            // Print the updated tables for debugging
+            printTheTable();
+            printThePorts();
+            printTimeout();
+
+            // Send a triggered DV update
+            sendDvUpdate();
+        } else {
+            // Move to the next neighbor
+            ++it;
         }
-      }
-      // clean the neighbor timeout table
-      neighbors.erase(neighbor.first);
     }
-  }
 }
+
 
 // update the dv table
 void RoutingProtocolImpl::processDV(unsigned short port, void *packet, unsigned short size){
@@ -353,7 +394,7 @@ void RoutingProtocolImpl::passPacket(void *packet, unsigned short size){
   unsigned char *packet_data = (unsigned char*)packet;
   unsigned short dest = ((unsigned short)packet_data[6] << 8) | packet_data[7];
 
-  printTheTable();
+  // printTheTable();
   if (dest == router_id) {
     cout << "Packet is received and freed" << endl;
     free(packet);
@@ -368,18 +409,14 @@ void RoutingProtocolImpl::passPacket(void *packet, unsigned short size){
     }
 
     unsigned short next = dv_table[dest].next_hop;
-    cout<<"next hop:" <<next<<endl;
-    cout<<router_id<<endl;
-    for(auto& neighbor: neighbor_ports){
-      cout<<neighbor.first<<" "<<neighbor.second<<endl;
-    }
+    
     if (neighbor_ports.find(next) == neighbor_ports.end()) {
         // Next hop not found
         cout << "Next hop not found, dropping packet" << endl;
         free(packet);
         return;
     }
-    cout<<"DATA packet sent"<<endl;
+    // cout<<"DATA packet sent"<<endl;
     unsigned short port = neighbor_ports[next];
     sys->send(port, packet, size);
   }
@@ -389,7 +426,7 @@ void RoutingProtocolImpl::passPacket(void *packet, unsigned short size){
 void RoutingProtocolImpl::printTheTable(){
   cout<<router_id<<endl;
   for(auto& entry: dv_table){
-    cout<<"destionation: " << entry.first<<" , next hop router: "<<entry.second.next_hop << " , port: " << neighbor_ports[entry.second.next_hop]<<endl;
+    cout<<"destionation: " << entry.first<<" , next hop router: "<<entry.second.next_hop << " , port: " << neighbor_ports[entry.second.next_hop]<< " , cost" << entry.second.cost<<endl;
   }
   cout<<endl;
 }
@@ -398,6 +435,14 @@ void RoutingProtocolImpl::printThePorts(){
   cout<<router_id<<endl;
   for(auto& neighbor: neighbor_ports){
     cout<<"neighbor: " << neighbor.first<<" , port: "<<neighbor.second <<endl;
+  }
+  cout<<endl;
+}
+
+void RoutingProtocolImpl::printTimeout(){
+  cout<<router_id<<endl;
+  for(auto& neighbor: neighbors){
+    cout<<"neighbor: " << neighbor.first<<" , lastseen: "<<neighbor.second <<endl;
   }
   cout<<endl;
 }

@@ -73,6 +73,7 @@ class RoutingProtocolImpl : public RoutingProtocol {
     //helper
     void printTheTable();
     void printThePorts();
+    void printTimeout();
 };
 
 #endif
