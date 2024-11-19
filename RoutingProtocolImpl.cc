@@ -77,8 +77,8 @@ void RoutingProtocolImpl::recv(unsigned short port, void *packet, unsigned short
   switch (packet_type){
     case DATA:
       // transmit packet
-      printTheTable();
-      printThePorts();
+      // printTheTable();
+      // printThePorts();
       passPacket(packet, size);
       break;
     case PING:
@@ -101,75 +101,81 @@ void RoutingProtocolImpl::recv(unsigned short port, void *packet, unsigned short
 
 }
 
-
-// add more of your own code
-// update routing table to neighbors
+ 
+// send updated routing table to neighbors
 void RoutingProtocolImpl::sendDvUpdate() {
-  for (auto& neighbor: neighbor_ports) {
-      unsigned short neighbor_port = neighbor.second;
-      vector<pair<unsigned short, unsigned short>> dv_entries;
-
-      // Build DV entries with poison reverse
-      for (auto &row : dv_table) {
-          unsigned short node_id = row.second.destination;
-          unsigned short cost = row.second.cost;
-
-          // Exclude self and unreachable nodes
-          if (node_id != router_id && cost != 65535) {
-              // Apply poison reverse
-              if (row.second.next_hop == neighbor.first) {
-                  cost = INFINITY_COST;
-              }
-              dv_entries.push_back({node_id, cost});
-          }
+  // format the dv_entries
+  vector<pair<unsigned short, unsigned short>> dv_entries;
+  
+  // Build DV entries with poison reverse
+  for (auto &row : dv_table) {
+      unsigned short dest = row.first;
+      unsigned short cost = row.second.cost;
+      // Exclude self and unreachable nodes
+      if (dest != router_id && cost != INFINITY_COST && dest != 0) {
+          // Apply poison reverse 
+          // TODO: CLEAN UP THE DV TABLE WHEN RECEIVE IT.
+          // if (row.second.next_hop == neighbor.first) {
+          //     cost = INFINITY_COST;
+          // }
+          dv_entries.push_back({dest, cost});
       }
-
-
-      // Packet format: type(1 byte) + reserved(1 byte) + size(2 bytes) + source(2 bytes) + destination(2 bytes) + entries
-      size_t dv_packet_size = 8 + dv_entries.size() * 4; // 8 bytes header + 4 bytes per entry
-      void *packet = malloc(dv_packet_size);
-      unsigned char *packet_data = (unsigned char*)packet;
-
-      // Packet Type (1 byte)
-      packet_data[0] = DV; // DV should be an unsigned char value
-
-      // Reserved (1 byte)
-      packet_data[1] = 0; // Reserved byte
-
-      // Number of entries (2 bytes)
-      unsigned short num_entries = (unsigned short)dv_entries.size();
-      packet_data[2] = (num_entries >> 8) & 0xFF; // High byte
-      packet_data[3] = num_entries & 0xFF;        // Low byte
-
-      // Source ID (2 bytes)
-      packet_data[4] = (router_id >> 8) & 0xFF;   // High byte
-      packet_data[5] = router_id & 0xFF;          // Low byte
-
-      // Destination ID (2 bytes)
-      packet_data[6] = (neighbor.first >> 8) & 0xFF;    // High byte
-      packet_data[7] = neighbor.first & 0xFF;           // Low byte
-
-      // Payload (Routing Entries)
-      size_t offset = 8;
-      for (size_t i = 0; i < dv_entries.size(); i++) {
-          unsigned short node_id = dv_entries[i].first;
-          unsigned short cost = dv_entries[i].second;
-
-          // Node ID (2 bytes)
-          packet_data[offset] = (node_id >> 8) & 0xFF;   // High byte
-          packet_data[offset + 1] = node_id & 0xFF;      // Low byte
-
-          // Cost (2 bytes)
-          packet_data[offset + 2] = (cost >> 8) & 0xFF;  // High byte
-          packet_data[offset + 3] = cost & 0xFF;         // Low byte
-
-          offset += 4; // Move to the next entry
-      }
-
-      // Send the DV update packet
-      sys->send(neighbor_port, packet, (unsigned short)dv_packet_size);
   }
-  last_dv_update_time = sys->time();
+  
+  // cout<<"dv_entries"<<endl;
+  // for(auto& entry: dv_entries){
+  //   cout<< "source: " << router_id <<" destionation: " << entry.first<<" , cost: " << entry.second<<endl;
+  // }
+
+  // send the dv_table to neighbors
+  for(auto& neighbor: neighbor_ports){
+    if(neighbor.first == router_id){
+      continue;
+    }
+    // Packet format: type(1 byte) + reserved(1 byte) + size(2 bytes) + source(2 bytes) + destination(2 bytes) + entries
+    size_t dv_packet_size = 8 + dv_entries.size() * 4; // 8 bytes header + 4 bytes per entry
+    void *packet = malloc(dv_packet_size);
+    unsigned char *packet_data = (unsigned char*)packet;
+
+    // Packet Type (1 byte)
+    packet_data[0] = DV; // DV should be an unsigned char value
+
+    // Reserved (1 byte)
+    packet_data[1] = 0; // Reserved byte
+
+    // Number of entries (2 bytes)
+    unsigned short num_entries = (unsigned short)dv_entries.size();
+    packet_data[2] = (num_entries >> 8) & 0xFF; // High byte
+    packet_data[3] = num_entries & 0xFF;        // Low byte
+
+    // Source ID (2 bytes)
+    packet_data[4] = (router_id >> 8) & 0xFF;   // High byte
+    packet_data[5] = router_id & 0xFF;          // Low byte
+
+    // Neighbor ID (2 bytes)
+    packet_data[6] = (neighbor.first >> 8) & 0xFF;    // High byte
+    packet_data[7] = neighbor.first & 0xFF;           // Low byte
+
+    // Payload (Routing Entries)
+    size_t offset = 8;
+    for (size_t i = 0; i < dv_entries.size(); i++) {
+      unsigned short dest = dv_entries[i].first;
+      unsigned short cost = dv_entries[i].second;
+
+      // Destionation ID (2 bytes)
+      packet_data[offset] = (dest >> 8) & 0xFF;   // High byte
+      packet_data[offset + 1] = dest & 0xFF;      // Low byte
+      // Cost (2 bytes)
+      packet_data[offset + 2] = (cost >> 8) & 0xFF;  // High byte
+      packet_data[offset + 3] = cost & 0xFF;         // Low byte
+
+      offset += 4; // Move to the next entry
+    }
+
+    // Send the DV update packet
+    sys->send(neighbor.second, packet, (unsigned short)dv_packet_size);
+  }
+  // last_dv_update_time = sys->time();
 }
 
 // detect existance of neighbor
@@ -248,7 +254,8 @@ void RoutingProtocolImpl::processPong(unsigned short port, void *packet, unsigne
     // Compute RTT
     unsigned int current_time = sys->time();
     unsigned int rtt = current_time - sent_time;
-    cout << "RTT to neighbor " << neighbor_id << ": " << rtt << endl;
+    cout << router_id << " RTT to neighbor " << neighbor_id << ": " << rtt << endl;
+    // printTheTable();
 
     // Update neighbor's last heard time
     neighbors[neighbor_id] = current_time;
@@ -282,8 +289,7 @@ void RoutingProtocolImpl::processPong(unsigned short port, void *packet, unsigne
                     entry.second.last_update_time = current_time;
                 }
             }
-
-            printTheTable();
+            // printTheTable();
         }
     }
 
@@ -324,9 +330,9 @@ void RoutingProtocolImpl::handleNeighborTimeout() {
             it = neighbors.erase(it);
 
             // Print the updated tables for debugging
-            printTheTable();
-            printThePorts();
-            printTimeout();
+            // printTheTable();
+            // printThePorts();
+            // printTimeout();
 
             // Send a triggered DV update
             sendDvUpdate();
@@ -345,7 +351,9 @@ void RoutingProtocolImpl::processDV(unsigned short port, void *packet, unsigned 
     unsigned short self_id = ((unsigned short)packet_data[6] << 8) | packet_data[7];
 
     if (self_id != router_id) {
+        // cout<<"dest id: " << self_id << " current router's id: " << router_id << endl;
         cout << "Destination id != current router's id" << endl;
+        printPacket(packet, size);
         free(packet);
         return;
     }
@@ -355,6 +363,11 @@ void RoutingProtocolImpl::processDV(unsigned short port, void *packet, unsigned 
     // Update neighbor's last heard time
     neighbors[neighbor_id] = sys->time();
 
+    cout<<"before processing dv"<<endl;
+    printTheTable();
+    printPacket(packet, size);
+
+    // process the packet
     for (int i = 0; i < num_entries; i++) {
         size_t offset = 8 + 4 * i;
         if (offset + 3 >= size) {
@@ -375,16 +388,27 @@ void RoutingProtocolImpl::processDV(unsigned short port, void *packet, unsigned 
             total_cost = INFINITY_COST;
         }
 
-        unsigned int original_cost = dv_table[node_id].cost;
-
-        // Update the cost and next-hop
-        if (total_cost < original_cost || dv_table[node_id].next_hop == neighbor_id) {
-            dv_table[node_id].cost = (unsigned short)total_cost;
-            dv_table[node_id].next_hop = neighbor_id;
-            dv_table[node_id].last_update_time = sys->time();
+        // add an intermediate node to the dv_table
+        if(dv_table.find(node_id) == dv_table.end()){
+          dv_table[node_id].destination = node_id;
+          dv_table[node_id].cost = total_cost;
+          dv_table[node_id].next_hop = neighbor_id;   // next hop is the neighbor
+          dv_table[node_id].last_update_time = sys->time();
+        }else{
+          unsigned int original_cost = dv_table[node_id].cost;
+          // Update the cost and next-hop
+          if (total_cost < original_cost) {
+              dv_table[node_id].cost = (unsigned short)total_cost;
+              dv_table[node_id].next_hop = neighbor_id;
+              dv_table[node_id].last_update_time = sys->time();
+          }
         }
 
+        
+
     }
+    cout<<"after processing dv"<<endl;
+    printTheTable();
 
     free(packet);
 }
@@ -426,7 +450,7 @@ void RoutingProtocolImpl::passPacket(void *packet, unsigned short size){
 void RoutingProtocolImpl::printTheTable(){
   cout<<router_id<<endl;
   for(auto& entry: dv_table){
-    cout<<"destionation: " << entry.first<<" , next hop router: "<<entry.second.next_hop << " , port: " << neighbor_ports[entry.second.next_hop]<< " , cost" << entry.second.cost<<endl;
+    cout<<"destionation: " << entry.first<<" , next hop router: "<<entry.second.next_hop << " , port: " << neighbor_ports[entry.second.next_hop]<< " , cost: " << entry.second.cost<<endl;
   }
   cout<<endl;
 }
@@ -445,4 +469,23 @@ void RoutingProtocolImpl::printTimeout(){
     cout<<"neighbor: " << neighbor.first<<" , lastseen: "<<neighbor.second <<endl;
   }
   cout<<endl;
+}
+
+void RoutingProtocolImpl::printPacket(void *packet, unsigned short size){
+  unsigned char *packet_data = (unsigned char*)packet;
+  unsigned short num_entries = ((unsigned short)packet_data[2] << 8) | packet_data[3];
+  unsigned short source = ((unsigned short)packet_data[4] << 8) | packet_data[5];
+  unsigned short dest = ((unsigned short)packet_data[6] << 8) | packet_data[7];
+  cout<<"source: "<<source<<", dest: "<<dest<<endl;
+  for (int i = 0; i < num_entries; i++) {
+      size_t offset = 8 + 4 * i;
+      if (offset + 3 >= size) {
+          // Prevent out-of-bounds access
+          break;
+      }
+      unsigned short node_id = ((unsigned short)packet_data[offset] << 8) | packet_data[offset + 1];
+      unsigned short cost = ((unsigned short)packet_data[offset + 2] << 8) | packet_data[offset + 3];
+      cout<<"to: " << node_id<<" , cost: " << cost<<endl;
+  }
+
 }

@@ -74,6 +74,7 @@ class RoutingProtocolImpl : public RoutingProtocol {
     void printTheTable();
     void printThePorts();
     void printTimeout();
+    void printPacket(void *packet, unsigned short size);
 };
 
 #endif
