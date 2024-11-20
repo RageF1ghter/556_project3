@@ -1,4 +1,5 @@
 #include "RoutingProtocolImpl.h"
+#include <set>
 
 RoutingProtocolImpl::RoutingProtocolImpl(Node *n) : RoutingProtocol(n) {
   sys = n;
@@ -92,7 +93,7 @@ void RoutingProtocolImpl::recv(unsigned short port, void *packet, unsigned short
       processDV(port, packet, size);
       break;
     case LS:
-      // processLS(port, packet, size);
+      processLS(port, packet, size);
       break;
     default: 
       free(packet);
@@ -448,6 +449,214 @@ void RoutingProtocolImpl::passPacket(void *packet, unsigned short size){
     // cout<<"DATA packet sent"<<endl;
     unsigned short port = neighbor_ports[next];
     sys->send(port, packet, size);
+  }
+}
+
+
+// LS
+void RoutingProtocolImpl::sendLSAUpdate(bool isTriggered) {
+  // Construct LSA packet
+  lsa_seq_nums[router_id]++;
+  unsigned int seq_num = lsa_seq_nums[router_id];
+
+  // Update own LSA in LS database
+  ls_db[router_id].clear();
+  ls_db[router_id][router_id] = 0;  // Cost to self is 0
+  for (auto &neighbor : neighbors) {
+    ls_db[router_id][neighbor.first] = neighbor_costs[neighbor.first];
+  }
+  lsa_last_update[router_id] = sys->time();
+
+  // Packet format:
+  // Type (1 byte) | Reserved (1 byte) | Num Entries (2 bytes)
+  // Source ID (2 bytes) | Sequence Number (4 bytes)
+  // Neighbor ID (2 bytes) | Cost (2 bytes) [Repeated for each neighbor]
+
+  size_t num_entries = ls_db[router_id].size();
+  size_t packet_size = 10 + num_entries * 4;
+  void *packet = malloc(packet_size);
+  unsigned char *packet_data = (unsigned char *)packet;
+
+  packet_data[0] = LS;  // Packet Type
+  packet_data[1] = 0;   // Reserved
+  packet_data[2] = (num_entries >> 8) & 0xFF;  // Num Entries High Byte
+  packet_data[3] = num_entries & 0xFF;         // Num Entries Low Byte
+
+  packet_data[4] = (router_id >> 8) & 0xFF;  // Source ID High Byte
+  packet_data[5] = router_id & 0xFF;         // Source ID Low Byte
+
+  packet_data[6] = (seq_num >> 24) & 0xFF;  // Sequence Number High Byte
+  packet_data[7] = (seq_num >> 16) & 0xFF;
+  packet_data[8] = (seq_num >> 8) & 0xFF;
+  packet_data[9] = seq_num & 0xFF;  // Sequence Number Low Byte
+
+  size_t offset = 10;
+  for (auto &entry : ls_db[router_id]) {
+    unsigned short neighbor_id = entry.first;
+    unsigned short cost = entry.second;
+
+    packet_data[offset++] = (neighbor_id >> 8) & 0xFF;
+    packet_data[offset++] = neighbor_id & 0xFF;
+    packet_data[offset++] = (cost >> 8) & 0xFF;
+    packet_data[offset++] = cost & 0xFF;
+  }
+
+  // Flood the LSA to all neighbors
+  for (auto &neighbor : neighbor_ports) {
+    unsigned short port = neighbor.second;
+    void *packet_copy = malloc(packet_size);
+    memcpy(packet_copy, packet, packet_size);
+    sys->send(port, packet_copy, (unsigned short)packet_size);
+  }
+
+  free(packet);
+}
+
+void RoutingProtocolImpl::processLS(unsigned short port, void *packet, unsigned short size) {
+  if (size < 10) {
+    // Packet too small
+    free(packet);
+    return;
+  }
+
+  unsigned char *packet_data = (unsigned char *)packet;
+
+  unsigned short num_entries = ((unsigned short)packet_data[2] << 8) | packet_data[3];
+  unsigned short source_id = ((unsigned short)packet_data[4] << 8) | packet_data[5];
+  unsigned int seq_num = ((unsigned int)packet_data[6] << 24) |
+                         ((unsigned int)packet_data[7] << 16) |
+                         ((unsigned int)packet_data[8] << 8) |
+                         ((unsigned int)packet_data[9]);
+
+  // Check if this LSA is newer
+  if (lsa_seq_nums.find(source_id) != lsa_seq_nums.end()) {
+    if (seq_num <= lsa_seq_nums[source_id]) {
+      // Old LSA, discard
+      free(packet);
+      return;
+    }
+  }
+
+  // Update LSA sequence number and last update time
+  lsa_seq_nums[source_id] = seq_num;
+  lsa_last_update[source_id] = sys->time();
+
+  // Parse LSA entries and update LS database
+  ls_db[source_id].clear();
+  size_t offset = 10;
+  for (int i = 0; i < num_entries; i++) {
+    if (offset + 3 >= size) {
+      break;
+    }
+
+    unsigned short neighbor_id = ((unsigned short)packet_data[offset] << 8) | packet_data[offset + 1];
+    unsigned short cost = ((unsigned short)packet_data[offset + 2] << 8) | packet_data[offset + 3];
+    ls_db[source_id][neighbor_id] = cost;
+    offset += 4;
+  }
+
+  // Recompute the forwarding table
+  runDijkstra();
+
+  // Flood the LSA to all neighbors except the one it came from
+  for (auto &neighbor : neighbor_ports) {
+    if (neighbor.second != port) {
+      void *packet_copy = malloc(size);
+      memcpy(packet_copy, packet, size);
+      sys->send(neighbor.second, packet_copy, size);
+    }
+  }
+
+  free(packet);
+}
+
+void RoutingProtocolImpl::handleLSATimeout() {
+  unsigned int current_time = sys->time();
+  bool database_changed = false;
+
+  auto it = lsa_last_update.begin();
+  while (it != lsa_last_update.end()) {
+    if (current_time - it->second > 45000) {  // 45 seconds timeout
+      unsigned short router_id = it->first;
+      ls_db.erase(router_id);
+      it = lsa_last_update.erase(it);
+      database_changed = true;
+    } else {
+      ++it;
+    }
+  }
+
+  if (database_changed) {
+    // Recompute the forwarding table
+    runDijkstra();
+  }
+}
+
+void RoutingProtocolImpl::runDijkstra() {
+  // Initialize data structures
+  std::unordered_map<unsigned short, unsigned int> distances;
+  std::unordered_map<unsigned short, unsigned short> previous;
+  std::set<unsigned short> visited;
+
+  auto cmp = [&](unsigned short left, unsigned short right) {
+    return distances[left] > distances[right];
+  };
+  std::priority_queue<unsigned short, std::vector<unsigned short>, decltype(cmp)> pq(cmp);
+
+  // Initialize distances
+  for (auto &entry : ls_db) {
+    distances[entry.first] = INFINITY_COST;
+    previous[entry.first] = 0;
+  }
+  distances[router_id] = 0;
+  pq.push(router_id);
+
+  while (!pq.empty()) {
+    unsigned short current = pq.top();
+    pq.pop();
+
+    if (visited.find(current) != visited.end())
+      continue;
+    visited.insert(current);
+
+    for (auto &neighbor : ls_db[current]) {
+      unsigned short neighbor_id = neighbor.first;
+      unsigned int cost = neighbor.second;
+
+      if (cost == INFINITY_COST)
+        continue;
+
+      unsigned int alt = distances[current] + cost;
+      if (alt < distances[neighbor_id]) {
+        distances[neighbor_id] = alt;
+        previous[neighbor_id] = current;
+        pq.push(neighbor_id);
+      }
+    }
+  }
+
+  // Update forwarding table
+  dv_table.clear();
+  for (auto &dist : distances) {
+    unsigned short dest = dist.first;
+    if (dest == router_id || dist.second == INFINITY_COST)
+      continue;
+
+    // Determine next hop
+    unsigned short next_hop = dest;
+    unsigned short prev = previous[dest];
+    while (previous[prev] != router_id && prev != router_id) {
+      next_hop = prev;
+      prev = previous[prev];
+    }
+
+    if (neighbor_ports.find(next_hop) != neighbor_ports.end()) {
+      RoutingEntry entry;
+      entry.destination = dest;
+      entry.next_hop = next_hop;
+      entry.cost = dist.second;
+      dv_table[dest] = entry;
+    }
   }
 }
 

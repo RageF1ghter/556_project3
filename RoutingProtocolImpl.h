@@ -54,11 +54,11 @@ class RoutingProtocolImpl : public RoutingProtocol {
     unsigned int neighbor_timeout;     // Timeout to consider a neighbor dead (ms)
     unsigned int last_dv_update_time;  // Last time a DV update was sent
 
+
+    // DV Protocol Methods
     unordered_map<unsigned short, RoutingEntry> dv_table; // Key: dest., val: dest, cost, next hop, and last_update_time
     unordered_map<unsigned short, unsigned int> neighbors;// Key: router id, val: timestamp
     unordered_map<unsigned short, int> neighbor_ports; // Key: router id, val: port.
-
-
     void sendDvUpdate();
     void sendPing();
     void handleNeighborTimeout();
@@ -66,9 +66,20 @@ class RoutingProtocolImpl : public RoutingProtocol {
     void processPing(unsigned short port, void *packet, unsigned short size);
     void processPong(unsigned short port, void *packet, unsigned short size);
     void processDV(unsigned short port, void *packet, unsigned short size);
-    void processLS(unsigned short port, void *packet, unsigned short size);
-
     void passPacket(void *packet, unsigned short size);
+
+    // LS Protocol Methods
+    std::unordered_map<unsigned short, std::unordered_map<unsigned short, unsigned short>> ls_db;
+    std::unordered_map<unsigned short, unsigned int> lsa_seq_nums;  // Sequence numbers for LSAs
+    std::unordered_map<unsigned short, unsigned int> lsa_last_update;  // Timestamp of last LSA from each router
+    std::unordered_map<unsigned short, unsigned short> neighbor_costs;  // Cost to each neighbor
+
+    void sendLSAUpdate(bool isTriggered = false);  // Send LS update packets
+    void processLS(unsigned short port, void *packet, unsigned short size);  // Process incoming LS packets
+    void handleLSATimeout();  // Periodically check and clean up expired LSAs
+    void runDijkstra();  // Compute shortest paths using Dijkstra's algorithm
+
+
 
     //helper
     void printTheTable();
