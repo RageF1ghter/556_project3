@@ -112,7 +112,7 @@ void RoutingProtocolImpl::sendDvUpdate() {
       unsigned short dest = row.first;
       unsigned short cost = row.second.cost;
       // Exclude self and unreachable nodes
-      if (dest != router_id && cost != INFINITY_COST && dest != 0) {
+      if (dest != router_id  && dest != 0) {
           // Apply poison reverse 
           // TODO: CLEAN UP THE DV TABLE WHEN RECEIVE IT.
           // if (row.second.next_hop == neighbor.first) {
@@ -310,7 +310,7 @@ void RoutingProtocolImpl::handleNeighborTimeout() {
         // Check if the neighbor is timed out
         if (curTime - it->second > neighbor_timeout) {
             unsigned short neighbor_id = it->first;
-
+            cout<< router_id<< " to "<< it->first << " neighbor timeout"<<endl;
             // Clean the dv_table
             for (auto& row : dv_table) {
                 if (row.second.next_hop == neighbor_id) {
@@ -336,6 +336,7 @@ void RoutingProtocolImpl::handleNeighborTimeout() {
 
             // Send a triggered DV update
             sendDvUpdate();
+            sendPing();
         } else {
             // Move to the next neighbor
             ++it;
@@ -397,14 +398,18 @@ void RoutingProtocolImpl::processDV(unsigned short port, void *packet, unsigned 
         }else{
           unsigned int original_cost = dv_table[node_id].cost;
           // Update the cost and next-hop
-          if (total_cost < original_cost) {
+          // set the cost to infinity if the dead link in the path
+          if(total_cost == INFINITY_COST && dv_table[node_id].next_hop == neighbor_id){
+            dv_table[node_id].cost = (unsigned short)total_cost;
+            dv_table[node_id].next_hop = neighbor_id;
+            dv_table[node_id].last_update_time = sys->time();
+          }
+          else if (total_cost < original_cost) {
               dv_table[node_id].cost = (unsigned short)total_cost;
               dv_table[node_id].next_hop = neighbor_id;
               dv_table[node_id].last_update_time = sys->time();
           }
         }
-
-        
 
     }
     cout<<"after processing dv"<<endl;
