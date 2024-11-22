@@ -4,7 +4,6 @@
 #include "RoutingProtocol.h"
 #include "Node.h"
 #include <unordered_map>
-using namespace std;
 
 struct RoutingEntry {
     unsigned short destination;        // Destination router ID
@@ -13,80 +12,71 @@ struct RoutingEntry {
     unsigned int last_update_time;     // The last time this entry was updated
 };
 
+struct LSA {
+    unsigned short source_id; // Originating router ID
+    unsigned long seq_num;    // Sequence number
+    unsigned int last_update_time; // The last time this entry was updated
+    std::unordered_map<unsigned short, unsigned short> neighbor_rtt; // Neighbor (ID, cost)
+};
+
 class RoutingProtocolImpl : public RoutingProtocol {
   public:
     RoutingProtocolImpl(Node *n);
     ~RoutingProtocolImpl();
 
     void init(unsigned short num_ports, unsigned short router_id, eProtocolType protocol_type);
-    // As discussed in the assignment document, your RoutingProtocolImpl is
-    // first initialized with the total number of ports on the router,
-    // the router's ID, and the protocol type (P_DV or P_LS) that
-    // should be used. See global.h for definitions of constants P_DV
-    // and P_LS.
+    // Initializes the routing protocol with the number of ports, router ID, and protocol type.
 
     void handle_alarm(void *data);
-    // As discussed in the assignment document, when an alarm scheduled by your
-    // RoutingProtoclImpl fires, your RoutingProtocolImpl's
-    // handle_alarm() function will be called, with the original piece
-    // of "data" memory supplied to set_alarm() provided. After you
-    // handle an alarm, the memory pointed to by "data" is under your
-    // ownership and you should free it if appropriate.
+    // Handles alarms for periodic tasks like sending updates and neighbor timeouts.
 
     void recv(unsigned short port, void *packet, unsigned short size);
-    // When a packet is received, your recv() function will be called
-    // with the port number on which the packet arrives from, the
-    // pointer to the packet memory, and the size of the packet in
-    // bytes. When you receive a packet, the packet memory is under
-    // your ownership and you should free it if appropriate. When a
-    // DATA packet is created at a router by the simulator, your
-    // recv() function will be called for such DATA packet, but with a
-    // special port number of SPECIAL_PORT (see global.h) to indicate
-    // that the packet is generated locally and not received from 
-    // a neighbor router.
+    // Receives packets and processes them based on their type.
 
- private:
-    Node *sys; // To store Node object; used to access GSR9999 interfaces 
-    unsigned short router_id;
-    unsigned short num_ports;
-    eProtocolType protocol_type;
-    unsigned int dv_update_interval;   // Interval for periodic DV updates (ms)
-    unsigned int neighbor_timeout;     // Timeout to consider a neighbor dead (ms)
+  private:
+    Node *sys;                        // Pointer to the Node object for system interactions
+    unsigned short router_id;         // ID of this router
+    unsigned short num_ports;         // Number of ports on this router
+    eProtocolType protocol_type;      // Protocol type (P_DV or P_LS)
+
+    // Reordered variables to match initialization order and prevent memory overwrite issues
+    unsigned int dv_update_interval;   // Interval for periodic DV updates (milliseconds)
+    unsigned int ls_update_interval;   // Interval for periodic LS updates (milliseconds)
+    unsigned int neighbor_timeout;     // Timeout to consider a neighbor dead (milliseconds)
     unsigned int last_dv_update_time;  // Last time a DV update was sent
 
+    // DV Protocol Data Structures
+    std::unordered_map<unsigned short, RoutingEntry> dv_table;    // DV routing table
+    std::unordered_map<unsigned short, unsigned int> neighbors;   // Neighbors with last heard time
+    std::unordered_map<unsigned short, int> neighbor_ports;       // Mapping from neighbor ID to port number
 
     // DV Protocol Methods
-    unordered_map<unsigned short, RoutingEntry> dv_table; // Key: dest., val: dest, cost, next hop, and last_update_time
-    unordered_map<unsigned short, unsigned int> neighbors;// Key: router id, val: timestamp
-    unordered_map<unsigned short, int> neighbor_ports; // Key: router id, val: port.
     void sendDvUpdate();
     void sendPing();
     void handleNeighborTimeout();
-    // void cleanExpiredEntry();
     void processPing(unsigned short port, void *packet, unsigned short size);
     void processPong(unsigned short port, void *packet, unsigned short size);
     void processDV(unsigned short port, void *packet, unsigned short size);
     void passPacket(void *packet, unsigned short size);
 
+    // LS Protocol Data Structures
+    std::unordered_map<unsigned short, LSA> lsdb;                    // Link State Database
+    LSA ls_entry;                                                    // Self LSA entry
+    std::unordered_map<unsigned short, unsigned short> routing_table; // Routing table for LS protocol
+
     // LS Protocol Methods
-    std::unordered_map<unsigned short, std::unordered_map<unsigned short, unsigned short>> ls_db;
-    std::unordered_map<unsigned short, unsigned int> lsa_seq_nums;  // Sequence numbers for LSAs
-    std::unordered_map<unsigned short, unsigned int> lsa_last_update;  // Timestamp of last LSA from each router
-    std::unordered_map<unsigned short, unsigned short> neighbor_costs;  // Cost to each neighbor
+    void floodLSA();
+    void passLSA(unsigned short port, void *packet, unsigned short size);
+    void processLSA(unsigned short port, void *packet, unsigned short size);
+    void runDijkstra();
 
-    void sendLSAUpdate(bool isTriggered = false);  // Send LS update packets
-    void processLS(unsigned short port, void *packet, unsigned short size);  // Process incoming LS packets
-    void handleLSATimeout();  // Periodically check and clean up expired LSAs
-    void runDijkstra();  // Compute shortest paths using Dijkstra's algorithm
-
-
-
-    //helper
+    // Helper Methods
     void printTheTable();
     void printThePorts();
     void printTimeout();
     void printPacket(void *packet, unsigned short size);
+    void printLSDB();
+    void printRoutingTable();
 };
 
-#endif
-
+#endif // ROUTINGPROTOCOLIMPL_H
