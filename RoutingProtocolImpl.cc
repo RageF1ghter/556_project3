@@ -1,5 +1,6 @@
 #include "RoutingProtocolImpl.h"
 #include <unordered_set>
+#include <cstring>
 
 RoutingProtocolImpl::RoutingProtocolImpl(Node *n) : RoutingProtocol(n)
 {
