@@ -252,7 +252,7 @@ void RoutingProtocolImpl::processPong(unsigned short port, void *packet, unsigne
 
     // update the lsbd
     lsdb[router_id].neighbor_rtt[neighbor_id] = rtt;
-    printLSDB();
+    // printLSDB();
 
     // update neighbor's last heard time
     neighbors[neighbor_id] = current_time;
@@ -337,6 +337,70 @@ void RoutingProtocolImpl::handleNeighborTimeout()
     }
   }
 }
+
+// pass the packet to the next hop
+void RoutingProtocolImpl::passPacket(void *packet, unsigned short size)
+{
+  unsigned char *packet_data = (unsigned char *)packet;
+  unsigned short dest = ((unsigned short)packet_data[6] << 8) | packet_data[7];
+
+  // printTheTable();
+  if (dest == router_id)
+  {
+    cout << "Packet is received and freed" << endl;
+    free(packet);
+  }
+  else
+  {
+    if (protocol_type == P_DV)
+    {
+      if (dv_table.find(dest) == dv_table.end() || dv_table[dest].cost == INFINITY_COST)
+      {
+        // Destination unreachable
+        cout << "Destination unreachable, dropping packet" << endl;
+        free(packet);
+        return;
+      }
+
+      unsigned short next = dv_table[dest].next_hop;
+
+      if (neighbor_ports.find(next) == neighbor_ports.end())
+      {
+        // Next hop not found
+        cout << "Next hop not found, dropping packet" << endl;
+        free(packet);
+        return;
+      }
+      // cout<<"DATA packet sent"<<endl;
+      unsigned short port = neighbor_ports[next];
+      sys->send(port, packet, size);
+    }
+    if (protocol_type == P_LS)
+    {
+      // find next hop
+      if (routing_table.find(dest) == routing_table.end())
+      {
+        // Destination unreachable
+        cout << "Destination unreachable, dropping packet" << endl;
+        free(packet);
+        return;
+      }
+      unsigned short next = routing_table[dest];
+
+      // find next hop's port
+      if (neighbor_ports.find(next) == neighbor_ports.end())
+      {
+        cout << "Next hop not found, dropping packet" << endl;
+        free(packet);
+        return;
+      }
+      // cout<<"DATA packet sent"<<endl;
+      unsigned short port = neighbor_ports[next];
+      sys->send(port, packet, size);
+    }
+  }
+}
+
 
 ////////////////////////////////////////// DV //////////////////////////////////////////
 // send updated routing table to neighbors
@@ -531,68 +595,6 @@ void RoutingProtocolImpl::processDV(unsigned short port, void *packet, unsigned 
   free(packet);
 }
 
-// pass the packet to the next hop
-void RoutingProtocolImpl::passPacket(void *packet, unsigned short size)
-{
-  unsigned char *packet_data = (unsigned char *)packet;
-  unsigned short dest = ((unsigned short)packet_data[6] << 8) | packet_data[7];
-
-  // printTheTable();
-  if (dest == router_id)
-  {
-    cout << "Packet is received and freed" << endl;
-    free(packet);
-  }
-  else
-  {
-    if (protocol_type == P_DV)
-    {
-      if (dv_table.find(dest) == dv_table.end() || dv_table[dest].cost == INFINITY_COST)
-      {
-        // Destination unreachable
-        cout << "Destination unreachable, dropping packet" << endl;
-        free(packet);
-        return;
-      }
-
-      unsigned short next = dv_table[dest].next_hop;
-
-      if (neighbor_ports.find(next) == neighbor_ports.end())
-      {
-        // Next hop not found
-        cout << "Next hop not found, dropping packet" << endl;
-        free(packet);
-        return;
-      }
-      // cout<<"DATA packet sent"<<endl;
-      unsigned short port = neighbor_ports[next];
-      sys->send(port, packet, size);
-    }
-    if (protocol_type == P_LS)
-    {
-      // find next hop
-      if (routing_table.find(dest) == routing_table.end())
-      {
-        // Destination unreachable
-        cout << "Destination unreachable, dropping packet" << endl;
-        free(packet);
-        return;
-      }
-      unsigned short next = routing_table[dest];
-
-      // find next hop's port
-      if (neighbor_ports.find(next) == neighbor_ports.end())
-      {
-        cout << "Next hop not found, dropping packet" << endl;
-        free(packet);
-        return;
-      }
-      // cout<<"DATA packet sent"<<endl;
-      unsigned short port = neighbor_ports[next];
-      sys->send(port, packet, size);
-    }
-  }
-}
 
 ///////////////////////////// LS ////////////////////////////////////////////
 // sending self lsa to all neighbors
