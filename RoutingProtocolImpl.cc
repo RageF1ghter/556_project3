@@ -156,27 +156,42 @@ void RoutingProtocolImpl::recv(unsigned short port, void *packet, unsigned short
 // received PING and send PONG back
 void RoutingProtocolImpl::processPing(unsigned short port, void *packet, unsigned short size)
 {
-  if (size < 12)
-  {
-    // Packet too small, discard
-    cout << "Packet too small, discard" << endl;
+    if (size < 12)
+    {
+        // Packet too small, discard
+        cout << "Packet too small, discard" << endl;
+        free(packet);
+        return;
+    }
+
+    // Decode the received packet
+    unsigned char *received_data = (unsigned char *)packet;
+
+    // Allocate a new packet for the PONG response
+    void *pong_packet = malloc(size);
+    unsigned char *pong_data = (unsigned char *)pong_packet;
+
+    // Copy the received packet data to the new packet
+    memcpy(pong_data, received_data, size);
+
+    // Modify the new packet to be a PONG
+    pong_data[0] = PONG;
+
+    // Swap source and destination IDs
+    pong_data[6] = received_data[4];
+    pong_data[7] = received_data[5];
+    pong_data[4] = (router_id >> 8) & 0xFF; // High byte of router_id
+    pong_data[5] = router_id & 0xFF;        // Low byte of router_id
+
+    // Timestamp remains unchanged
+
+    // Send the PONG packet
+    sys->send(port, pong_packet, size);
+
+    // Free the received packet
     free(packet);
-    return;
-  }
-
-  // decode the packet
-  unsigned char *packet_data = (unsigned char *)packet;
-  packet_data[0] = PONG;
-
-  // copy source to dest.
-  packet_data[6] = packet_data[4];
-  packet_data[7] = packet_data[5];
-  // set the source
-  packet_data[4] = (router_id >> 8) & 0xFF; // High byte
-  packet_data[5] = router_id & 0xFF;        // Low byte
-  // ts remains unchanged
-  sys->send(port, packet, size);
 }
+
 
 // recv PONG and update the neighbor_ports map
 void RoutingProtocolImpl::processPong(unsigned short port, void *packet, unsigned short size)
