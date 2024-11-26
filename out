@@ -17,13 +17,13 @@ link: 4 5 5 0.000000
 link: 5 6 10 0.000000
 Reading events...
 Line being read is: 10.00 xmit (1,4)
-Line being read is: 11.00 xmit (1,6)
+Line being read is: 12.00 xmit (1,6)
 Line being read is: 15.00 linkdying (4,5)
 Line being read is: 21.00 xmit (1,3)
-Line being read is: 27.00 xmit (1,3)
-Line being read is: 28.00 linkcomingup (4,5)
-Line being read is: 33.00 xmit (1,6)
-Line being read is: 35.00 end
+Line being read is: 34.00 xmit (1,6)
+Line being read is: 35.00 linkcomingup (4,5)
+Line being read is: 45.00 xmit (1,6)
+Line being read is: 50.00 end
 Simulator Initialization complete.
 Step 2: Simulator beginning to run...
 time = 0 Event_Xmit_Pkt_On_Link (6,3) packet type is PING
@@ -289,6 +289,14 @@ time = 9 Event_Alarm on node 1
 time = 10 Event_Alarm on node 3
 time = 10 Event_Alarm on node 1
 time = 10 Event_Xmit_Data_Pkt source node 1 destination node 4 packet type is DATA
+1
+destionation: 6 , next hop router: 4 , port: 2 , cost: 40 , last_updated_at: 35
+destionation: 3 , next hop router: 4 , port: 2 , cost: 30 , last_updated_at: 25
+destionation: 2 , next hop router: 2 , port: 0 , cost: 20 , last_updated_at: 20
+destionation: 5 , next hop router: 4 , port: 2 , cost: 20 , last_updated_at: 15
+destionation: 4 , next hop router: 4 , port: 2 , cost: 10 , last_updated_at: 10
+destionation: 1 , next hop router: 1 , port: 0 , cost: 0 , last_updated_at: 0
+
 time = 10 Event_Alarm on node 1
 time = 10 Event_Xmit_Pkt_On_Link (1,3) packet type is PING
 time = 10 Event_Xmit_Pkt_On_Link (1,4) packet type is PING
@@ -321,6 +329,14 @@ time = 10 Event_Alarm on node 2
 time = 10 Event_Xmit_Pkt_On_Link (3,6) packet type is PING
 time = 10 Event_Xmit_Pkt_On_Link (1,2) packet type is PING
 time = 10.005 Event_Recv_Pkt_On_Node 4 packet type is DATA
+4
+destionation: 6 , next hop router: 5 , port: 3 , cost: 30 , last_updated_at: 25
+destionation: 2 , next hop router: 2 , port: 1 , cost: 20 , last_updated_at: 20
+destionation: 3 , next hop router: 5 , port: 3 , cost: 20 , last_updated_at: 15
+destionation: 1 , next hop router: 1 , port: 0 , cost: 10 , last_updated_at: 10
+destionation: 5 , next hop router: 5 , port: 3 , cost: 10 , last_updated_at: 10
+destionation: 4 , next hop router: 4 , port: 0 , cost: 0 , last_updated_at: 0
+
 Packet is received and freed
 time = 10.005 Event_Recv_Pkt_On_Node 4 packet type is PING
 time = 10.005 Event_Recv_Pkt_On_Node 1 packet type is PING
@@ -549,72 +565,104 @@ time = 10.075 Event_Recv_Pkt_On_Node 6 packet type is DV
 time = 11 Event_Alarm on node 3
 time = 11 Event_Alarm on node 4
 time = 11 Event_Alarm on node 1
-time = 11 Event_Xmit_Data_Pkt source node 1 destination node 6 packet type is DATA
 time = 11 Event_Alarm on node 6
-time = 11 Event_Xmit_Pkt_On_Link (1,4) packet type is DATA
 time = 11 Event_Alarm on node 5
 time = 11 Event_Alarm on node 2
-time = 11.005 Event_Recv_Pkt_On_Node 4 packet type is DATA
-time = 11.005 Event_Xmit_Pkt_On_Link (4,5) packet type is DATA
-time = 11.01 Event_Recv_Pkt_On_Node 5 packet type is DATA
-time = 11.01 Event_Xmit_Pkt_On_Link (5,6) packet type is DATA
-time = 11.02 Event_Recv_Pkt_On_Node 6 packet type is DATA
-Packet is received and freed
-time = 12 Event_Alarm on node 1
-time = 12 Event_Alarm on node 3
-time = 12 Event_Alarm on node 5
+time = 12 Event_Xmit_Data_Pkt source node 1 destination node 6 packet type is DATA
+1
+destionation: 6 , next hop router: 4 , port: 2 , cost: 40 , last_updated_at: 35
+destionation: 3 , next hop router: 4 , port: 2 , cost: 30 , last_updated_at: 25
+destionation: 2 , next hop router: 2 , port: 0 , cost: 20 , last_updated_at: 20
+destionation: 5 , next hop router: 4 , port: 2 , cost: 20 , last_updated_at: 15
+destionation: 4 , next hop router: 4 , port: 2 , cost: 10 , last_updated_at: 10
+destionation: 1 , next hop router: 1 , port: 0 , cost: 0 , last_updated_at: 0
+
 time = 12 Event_Alarm on node 2
-time = 12 Event_Alarm on node 6
+time = 12 Event_Xmit_Pkt_On_Link (1,4) packet type is DATA
+time = 12 Event_Alarm on node 3
 time = 12 Event_Alarm on node 4
-time = 13 Event_Alarm on node 1
+time = 12 Event_Alarm on node 5
+time = 12 Event_Alarm on node 1
+time = 12 Event_Alarm on node 6
+time = 12.005 Event_Recv_Pkt_On_Node 4 packet type is DATA
+4
+destionation: 6 , next hop router: 5 , port: 3 , cost: 30 , last_updated_at: 25
+destionation: 2 , next hop router: 2 , port: 1 , cost: 20 , last_updated_at: 20
+destionation: 3 , next hop router: 5 , port: 3 , cost: 20 , last_updated_at: 15
+destionation: 1 , next hop router: 1 , port: 0 , cost: 10 , last_updated_at: 10
+destionation: 5 , next hop router: 5 , port: 3 , cost: 10 , last_updated_at: 10
+destionation: 4 , next hop router: 4 , port: 0 , cost: 0 , last_updated_at: 0
+
+time = 12.005 Event_Xmit_Pkt_On_Link (4,5) packet type is DATA
+time = 12.01 Event_Recv_Pkt_On_Node 5 packet type is DATA
+5
+destionation: 2 , next hop router: 4 , port: 1 , cost: 30 , last_updated_at: 25
+destionation: 6 , next hop router: 6 , port: 2 , cost: 20 , last_updated_at: 20
+destionation: 1 , next hop router: 4 , port: 1 , cost: 20 , last_updated_at: 15
+destionation: 3 , next hop router: 3 , port: 0 , cost: 10 , last_updated_at: 10
+destionation: 4 , next hop router: 4 , port: 1 , cost: 10 , last_updated_at: 10
+destionation: 5 , next hop router: 5 , port: 0 , cost: 0 , last_updated_at: 0
+
+time = 12.01 Event_Xmit_Pkt_On_Link (5,6) packet type is DATA
+time = 12.02 Event_Recv_Pkt_On_Node 6 packet type is DATA
+6
+destionation: 2 , next hop router: 5 , port: 1 , cost: 50 , last_updated_at: 10020
+destionation: 4 , next hop router: 5 , port: 1 , cost: 30 , last_updated_at: 30
+destionation: 3 , next hop router: 5 , port: 1 , cost: 30 , last_updated_at: 30
+destionation: 5 , next hop router: 5 , port: 1 , cost: 20 , last_updated_at: 20
+destionation: 1 , next hop router: 5 , port: 1 , cost: 40 , last_updated_at: 30
+destionation: 6 , next hop router: 6 , port: 0 , cost: 0 , last_updated_at: 0
+
+Packet is received and freed
+time = 13 Event_Alarm on node 2
 time = 13 Event_Alarm on node 3
+time = 13 Event_Alarm on node 1
 time = 13 Event_Alarm on node 6
 time = 13 Event_Alarm on node 4
 time = 13 Event_Alarm on node 5
-time = 13 Event_Alarm on node 2
-time = 14 Event_Alarm on node 1
-time = 14 Event_Alarm on node 3
-time = 14 Event_Alarm on node 5
 time = 14 Event_Alarm on node 2
-time = 14 Event_Alarm on node 6
+time = 14 Event_Alarm on node 3
 time = 14 Event_Alarm on node 4
+time = 14 Event_Alarm on node 5
+time = 14 Event_Alarm on node 1
+time = 14 Event_Alarm on node 6
 time = 15 Event_Link_Die (4,5)
-time = 15 Event_Alarm on node 4
-time = 15 Event_Alarm on node 1
-time = 15 Event_Alarm on node 3
 time = 15 Event_Alarm on node 6
-time = 15 Event_Alarm on node 5
 time = 15 Event_Alarm on node 2
-time = 16 Event_Alarm on node 4
-time = 16 Event_Alarm on node 1
-time = 16 Event_Alarm on node 3
-time = 16 Event_Alarm on node 2
+time = 15 Event_Alarm on node 3
+time = 15 Event_Alarm on node 1
+time = 15 Event_Alarm on node 4
+time = 15 Event_Alarm on node 5
 time = 16 Event_Alarm on node 6
+time = 16 Event_Alarm on node 2
+time = 16 Event_Alarm on node 3
 time = 16 Event_Alarm on node 5
-time = 17 Event_Alarm on node 4
-time = 17 Event_Alarm on node 1
-time = 17 Event_Alarm on node 3
-time = 17 Event_Alarm on node 5
-time = 17 Event_Alarm on node 2
+time = 16 Event_Alarm on node 1
+time = 16 Event_Alarm on node 4
 time = 17 Event_Alarm on node 6
-time = 18 Event_Alarm on node 4
-time = 18 Event_Alarm on node 1
-time = 18 Event_Alarm on node 3
+time = 17 Event_Alarm on node 2
+time = 17 Event_Alarm on node 3
+time = 17 Event_Alarm on node 4
+time = 17 Event_Alarm on node 5
+time = 17 Event_Alarm on node 1
 time = 18 Event_Alarm on node 6
-time = 18 Event_Alarm on node 5
 time = 18 Event_Alarm on node 2
-time = 19 Event_Alarm on node 4
-time = 19 Event_Alarm on node 1
-time = 19 Event_Alarm on node 3
-time = 19 Event_Alarm on node 2
+time = 18 Event_Alarm on node 3
+time = 18 Event_Alarm on node 1
+time = 18 Event_Alarm on node 4
+time = 18 Event_Alarm on node 5
 time = 19 Event_Alarm on node 6
+time = 19 Event_Alarm on node 2
+time = 19 Event_Alarm on node 3
 time = 19 Event_Alarm on node 5
+time = 19 Event_Alarm on node 1
+time = 19 Event_Alarm on node 4
 time = 20 Event_Alarm on node 1
 time = 20 Event_Alarm on node 4
-time = 20 Event_Alarm on node 1
+time = 20 Event_Alarm on node 2
 time = 20 Event_Alarm on node 3
-time = 20 Event_Alarm on node 5
 time = 20 Event_Alarm on node 4
+time = 20 Event_Alarm on node 6
 time = 20 Event_Xmit_Pkt_On_Link (1,2) packet type is PING
 time = 20 Event_Alarm on node 5
 time = 20 Event_Xmit_Pkt_On_Link (5,6) packet type is PING
@@ -624,7 +672,7 @@ time = 20 Event_Xmit_Pkt_On_Link (3,2) packet type is PING
 time = 20 Event_Xmit_Pkt_On_Link (3,4) packet type is PING
 time = 20 Event_Xmit_Pkt_On_Link (3,5) packet type is PING
 time = 20 Event_Xmit_Pkt_On_Link (3,6) packet type is PING
-time = 20 Event_Alarm on node 6
+time = 20 Event_Alarm on node 1
 time = 20 Event_Xmit_Pkt_On_Link (1,3) packet type is PING
 time = 20 Event_Xmit_Pkt_On_Link (1,4) packet type is PING
 time = 20 Event_Xmit_Pkt_On_Link (4,1) packet type is PING
@@ -632,7 +680,7 @@ time = 20 Event_Xmit_Pkt_On_Link (4,2) packet type is PING
 time = 20 Event_Alarm on node 6
 time = 20 Event_Xmit_Pkt_On_Link (6,3) packet type is PING
 time = 20 Event_Xmit_Pkt_On_Link (6,5) packet type is PING
-time = 20 Event_Alarm on node 2
+time = 20 Event_Alarm on node 5
 time = 20 Event_Xmit_Pkt_On_Link (4,3) packet type is PING
 time = 20 Event_Xmit_Pkt_On_Link (4,5) packet type is PING
 Packet lost
@@ -845,41 +893,58 @@ time = 20.075 Event_Recv_Pkt_On_Node 6 packet type is DV
 time = 20.075 Event_Recv_Pkt_On_Node 1 packet type is DV
 time = 20.075 Event_Recv_Pkt_On_Node 6 packet type is DV
 time = 20.075 Event_Recv_Pkt_On_Node 3 packet type is DV
-time = 21 Event_Alarm on node 4
-time = 21 Event_Alarm on node 5
-time = 21 Event_Xmit_Data_Pkt source node 1 destination node 3 packet type is DATA
-time = 21 Event_Alarm on node 1
-time = 21 Event_Xmit_Pkt_On_Link (1,4) packet type is DATA
 time = 21 Event_Alarm on node 6
-time = 21 Event_Alarm on node 3
+time = 21 Event_Alarm on node 4
+time = 21 Event_Xmit_Data_Pkt source node 1 destination node 3 packet type is DATA
+1
+destionation: 6 , next hop router: 4 , port: 2 , cost: 40 , last_updated_at: 35
+destionation: 3 , next hop router: 4 , port: 2 , cost: 30 , last_updated_at: 25
+destionation: 2 , next hop router: 2 , port: 0 , cost: 20 , last_updated_at: 20
+destionation: 5 , next hop router: 4 , port: 2 , cost: 20 , last_updated_at: 15
+destionation: 4 , next hop router: 4 , port: 2 , cost: 10 , last_updated_at: 10
+destionation: 1 , next hop router: 1 , port: 0 , cost: 0 , last_updated_at: 0
+
 time = 21 Event_Alarm on node 2
+time = 21 Event_Xmit_Pkt_On_Link (1,4) packet type is DATA
+time = 21 Event_Alarm on node 1
+time = 21 Event_Alarm on node 3
+time = 21 Event_Alarm on node 5
 time = 21.005 Event_Recv_Pkt_On_Node 4 packet type is DATA
+4
+destionation: 6 , next hop router: 5 , port: 3 , cost: 30 , last_updated_at: 25
+destionation: 2 , next hop router: 2 , port: 1 , cost: 20 , last_updated_at: 20
+destionation: 3 , next hop router: 5 , port: 3 , cost: 20 , last_updated_at: 15
+destionation: 1 , next hop router: 1 , port: 0 , cost: 10 , last_updated_at: 10
+destionation: 5 , next hop router: 5 , port: 3 , cost: 10 , last_updated_at: 10
+destionation: 4 , next hop router: 4 , port: 0 , cost: 0 , last_updated_at: 0
+
 time = 21.005 Event_Xmit_Pkt_On_Link (4,5) packet type is DATA
 Packet lost
+time = 22 Event_Alarm on node 6
 time = 22 Event_Alarm on node 4
 time = 22 Event_Alarm on node 5
 time = 22 Event_Alarm on node 2
 time = 22 Event_Alarm on node 1
-time = 22 Event_Alarm on node 6
 time = 22 Event_Alarm on node 3
+time = 23 Event_Alarm on node 6
 time = 23 Event_Alarm on node 4
 time = 23 Event_Alarm on node 5
-time = 23 Event_Alarm on node 2
 time = 23 Event_Alarm on node 3
+time = 23 Event_Alarm on node 2
 time = 23 Event_Alarm on node 1
-time = 23 Event_Alarm on node 6
+time = 24 Event_Alarm on node 6
 time = 24 Event_Alarm on node 4
 time = 24 Event_Alarm on node 5
-time = 24 Event_Alarm on node 2
-time = 24 Event_Alarm on node 6
-time = 24 Event_Alarm on node 3
 time = 24 Event_Alarm on node 1
+time = 24 Event_Alarm on node 3
+time = 24 Event_Alarm on node 2
+time = 25 Event_Alarm on node 6
 time = 25 Event_Alarm on node 4
 time = 25 Event_Alarm on node 5
 time = 25 Event_Alarm on node 2
 time = 25 Event_Alarm on node 1
-time = 25 Event_Alarm on node 6
 time = 25 Event_Alarm on node 3
+time = 26 Event_Alarm on node 6
 time = 26 Event_Alarm on node 4
 4 to 5 neighbor timeout
 Cleaning neighbor from ports: 5
@@ -888,368 +953,791 @@ time = 26 Event_Alarm on node 5
 5 to 4 neighbor timeout
 Cleaning neighbor from ports: 4
 Removing neighbor 4 from neighbors list due to timeout.
-time = 26 Event_Alarm on node 2
 time = 26 Event_Alarm on node 3
+time = 26 Event_Xmit_Pkt_On_Link (4,3) packet type is DV
+time = 26 Event_Xmit_Pkt_On_Link (4,2) packet type is DV
+time = 26 Event_Alarm on node 2
+time = 26 Event_Xmit_Pkt_On_Link (4,1) packet type is DV
+time = 26 Event_Xmit_Pkt_On_Link (5,6) packet type is DV
+time = 26 Event_Xmit_Pkt_On_Link (5,3) packet type is DV
 time = 26 Event_Alarm on node 1
-time = 26 Event_Alarm on node 6
-time = 27 Event_Xmit_Data_Pkt source node 1 destination node 3 packet type is DATA
-time = 27 Event_Alarm on node 2
+time = 26.005 Event_Recv_Pkt_On_Node 1 packet type is DV
+time = 26.005 Event_Recv_Pkt_On_Node 3 packet type is DV
+time = 26.01 Event_Recv_Pkt_On_Node 2 packet type is DV
+time = 26.01 Event_Recv_Pkt_On_Node 6 packet type is DV
+time = 26.015 Event_Recv_Pkt_On_Node 3 packet type is DV
 time = 27 Event_Alarm on node 6
-time = 27 Event_Xmit_Pkt_On_Link (1,4) packet type is DATA
-time = 27 Event_Alarm on node 4
 time = 27 Event_Alarm on node 5
 time = 27 Event_Alarm on node 3
+time = 27 Event_Alarm on node 4
 time = 27 Event_Alarm on node 1
-time = 27.005 Event_Recv_Pkt_On_Node 4 packet type is DATA
-Destination unreachable, dropping packet
-time = 28 Event_Alarm on node 2
-time = 28 Event_Alarm on node 1
-time = 28 Event_Link_Come_Up (4,5)
-time = 28 Event_Alarm on node 4
+time = 27 Event_Alarm on node 2
 time = 28 Event_Alarm on node 6
 time = 28 Event_Alarm on node 5
 time = 28 Event_Alarm on node 3
-time = 29 Event_Alarm on node 2
-time = 29 Event_Alarm on node 4
+time = 28 Event_Alarm on node 2
+time = 28 Event_Alarm on node 4
+time = 28 Event_Alarm on node 1
 time = 29 Event_Alarm on node 6
+time = 29 Event_Alarm on node 5
 time = 29 Event_Alarm on node 3
 time = 29 Event_Alarm on node 1
-time = 29 Event_Alarm on node 5
+time = 29 Event_Alarm on node 2
+time = 29 Event_Alarm on node 4
 time = 30 Event_Alarm on node 3
 time = 30 Event_Alarm on node 2
-time = 30 Event_Alarm on node 3
-time = 30 Event_Alarm on node 3
 time = 30 Event_Alarm on node 5
-time = 30 Event_Alarm on node 2
-time = 30 Event_Xmit_Pkt_On_Link (3,6) packet type is PING
+time = 30 Event_Alarm on node 3
 time = 30 Event_Alarm on node 4
-time = 30 Event_Xmit_Pkt_On_Link (2,3) packet type is DV
-time = 30 Event_Xmit_Pkt_On_Link (2,1) packet type is DV
-time = 30 Event_Xmit_Pkt_On_Link (2,4) packet type is DV
-time = 30 Event_Alarm on node 5
-time = 30 Event_Xmit_Pkt_On_Link (4,3) packet type is DV
-time = 30 Event_Xmit_Pkt_On_Link (4,2) packet type is DV
-time = 30 Event_Alarm on node 6
-time = 30 Event_Xmit_Pkt_On_Link (4,1) packet type is DV
-time = 30 Event_Xmit_Pkt_On_Link (5,3) packet type is PING
-time = 30 Event_Alarm on node 2
-time = 30 Event_Alarm on node 6
-time = 30 Event_Xmit_Pkt_On_Link (3,6) packet type is DV
-time = 30 Event_Xmit_Pkt_On_Link (5,4) packet type is PING
 time = 30 Event_Xmit_Pkt_On_Link (5,6) packet type is PING
-time = 30 Event_Xmit_Pkt_On_Link (3,1) packet type is DV
+time = 30 Event_Alarm on node 1
+time = 30 Event_Alarm on node 6
+time = 30 Event_Alarm on node 6
+time = 30 Event_Xmit_Pkt_On_Link (1,3) packet type is DV
+time = 30 Event_Xmit_Pkt_On_Link (1,2) packet type is DV
+time = 30 Event_Xmit_Pkt_On_Link (1,4) packet type is DV
 time = 30 Event_Xmit_Pkt_On_Link (6,3) packet type is PING
 time = 30 Event_Xmit_Pkt_On_Link (6,5) packet type is PING
-time = 30 Event_Alarm on node 4
-time = 30 Event_Xmit_Pkt_On_Link (3,2) packet type is DV
-time = 30 Event_Xmit_Pkt_On_Link (3,4) packet type is DV
+time = 30 Event_Xmit_Pkt_On_Link (6,3) packet type is DV
+time = 30 Event_Xmit_Pkt_On_Link (6,5) packet type is DV
 time = 30 Event_Alarm on node 5
+time = 30 Event_Alarm on node 4
+time = 30 Event_Alarm on node 5
+time = 30 Event_Alarm on node 3
 time = 30 Event_Xmit_Pkt_On_Link (5,6) packet type is DV
 time = 30 Event_Xmit_Pkt_On_Link (5,3) packet type is DV
+time = 30 Event_Xmit_Pkt_On_Link (4,1) packet type is PING
+time = 30 Event_Xmit_Pkt_On_Link (4,2) packet type is PING
+time = 30 Event_Alarm on node 6
+time = 30 Event_Xmit_Pkt_On_Link (3,6) packet type is DV
+time = 30 Event_Xmit_Pkt_On_Link (4,3) packet type is PING
+time = 30 Event_Xmit_Pkt_On_Link (4,5) packet type is PING
+Packet lost
+time = 30 Event_Xmit_Pkt_On_Link (3,1) packet type is DV
+time = 30 Event_Xmit_Pkt_On_Link (3,1) packet type is PING
+time = 30 Event_Xmit_Pkt_On_Link (3,2) packet type is PING
+time = 30 Event_Xmit_Pkt_On_Link (3,6) packet type is PING
+time = 30 Event_Alarm on node 4
+time = 30 Event_Alarm on node 2
+time = 30 Event_Xmit_Pkt_On_Link (3,2) packet type is DV
+time = 30 Event_Xmit_Pkt_On_Link (3,4) packet type is PING
+time = 30 Event_Xmit_Pkt_On_Link (3,5) packet type is PING
+time = 30 Event_Xmit_Pkt_On_Link (3,4) packet type is DV
+time = 30 Event_Xmit_Pkt_On_Link (4,3) packet type is DV
+time = 30 Event_Xmit_Pkt_On_Link (4,2) packet type is DV
+time = 30 Event_Xmit_Pkt_On_Link (3,5) packet type is DV
+time = 30 Event_Xmit_Pkt_On_Link (4,1) packet type is DV
+time = 30 Event_Xmit_Pkt_On_Link (2,1) packet type is PING
+time = 30 Event_Alarm on node 1
 time = 30 Event_Alarm on node 1
 time = 30 Event_Xmit_Pkt_On_Link (1,2) packet type is PING
 time = 30 Event_Xmit_Pkt_On_Link (1,3) packet type is PING
-time = 30 Event_Alarm on node 1
-time = 30 Event_Xmit_Pkt_On_Link (3,5) packet type is DV
-time = 30 Event_Xmit_Pkt_On_Link (2,1) packet type is PING
 time = 30 Event_Xmit_Pkt_On_Link (1,4) packet type is PING
 time = 30 Event_Xmit_Pkt_On_Link (2,3) packet type is PING
 time = 30 Event_Xmit_Pkt_On_Link (2,4) packet type is PING
-time = 30 Event_Alarm on node 6
-time = 30 Event_Alarm on node 4
-time = 30 Event_Xmit_Pkt_On_Link (6,3) packet type is DV
-time = 30 Event_Xmit_Pkt_On_Link (6,5) packet type is DV
-time = 30 Event_Xmit_Pkt_On_Link (4,1) packet type is PING
-time = 30 Event_Xmit_Pkt_On_Link (4,2) packet type is PING
-time = 30 Event_Xmit_Pkt_On_Link (4,3) packet type is PING
-time = 30 Event_Xmit_Pkt_On_Link (4,5) packet type is PING
-time = 30 Event_Xmit_Pkt_On_Link (3,1) packet type is PING
-time = 30 Event_Xmit_Pkt_On_Link (3,2) packet type is PING
-time = 30 Event_Alarm on node 1
-time = 30 Event_Xmit_Pkt_On_Link (3,4) packet type is PING
-time = 30 Event_Xmit_Pkt_On_Link (1,3) packet type is DV
-time = 30 Event_Xmit_Pkt_On_Link (3,5) packet type is PING
-time = 30 Event_Xmit_Pkt_On_Link (1,2) packet type is DV
-time = 30 Event_Xmit_Pkt_On_Link (1,4) packet type is DV
-time = 30.005 Event_Recv_Pkt_On_Node 4 packet type is PING
-time = 30.005 Event_Recv_Pkt_On_Node 1 packet type is DV
-time = 30.005 Event_Recv_Pkt_On_Node 3 packet type is DV
-time = 30.005 Event_Recv_Pkt_On_Node 3 packet type is PING
-time = 30.005 Event_Recv_Pkt_On_Node 5 packet type is DV
-time = 30.005 Event_Recv_Pkt_On_Node 4 packet type is PING
-time = 30.005 Event_Recv_Pkt_On_Node 1 packet type is PING
-time = 30.005 Event_Recv_Pkt_On_Node 5 packet type is PING
-time = 30.005 Event_Xmit_Pkt_On_Link (4,1) packet type is PONG
-time = 30.005 Event_Xmit_Pkt_On_Link (1,4) packet type is PONG
-time = 30.005 Event_Xmit_Pkt_On_Link (5,4) packet type is PONG
-time = 30.005 Event_Recv_Pkt_On_Node 5 packet type is PING
+time = 30 Event_Alarm on node 2
+time = 30 Event_Xmit_Pkt_On_Link (5,3) packet type is PING
+time = 30 Event_Xmit_Pkt_On_Link (5,4) packet type is PING
+Packet lost
+time = 30 Event_Xmit_Pkt_On_Link (2,3) packet type is DV
+time = 30 Event_Xmit_Pkt_On_Link (2,1) packet type is DV
+time = 30 Event_Xmit_Pkt_On_Link (2,4) packet type is DV
 time = 30.005 Event_Recv_Pkt_On_Node 4 packet type is DV
+time = 30.005 Event_Recv_Pkt_On_Node 3 packet type is DV
+time = 30.005 Event_Recv_Pkt_On_Node 1 packet type is PING
+time = 30.005 Event_Recv_Pkt_On_Node 5 packet type is DV
+time = 30.005 Event_Recv_Pkt_On_Node 1 packet type is DV
+time = 30.005 Event_Recv_Pkt_On_Node 5 packet type is PING
+time = 30.005 Event_Recv_Pkt_On_Node 4 packet type is PING
 time = 30.005 Event_Xmit_Pkt_On_Link (5,3) packet type is PONG
+time = 30.005 Event_Xmit_Pkt_On_Link (4,1) packet type is PONG
+time = 30.005 Event_Recv_Pkt_On_Node 3 packet type is PING
+time = 30.005 Event_Xmit_Pkt_On_Link (1,4) packet type is PONG
 time = 30.005 Event_Xmit_Pkt_On_Link (3,5) packet type is PONG
-time = 30.005 Event_Xmit_Pkt_On_Link (4,5) packet type is PONG
-time = 30.01 Event_Recv_Pkt_On_Node 1 packet type is DV
-time = 30.01 Event_Recv_Pkt_On_Node 2 packet type is DV
-time = 30.01 Event_Recv_Pkt_On_Node 4 packet type is DV
-time = 30.01 Event_Recv_Pkt_On_Node 5 packet type is PONG
-5 RTT to neighbor 4: 10
-Updating cost to neighbor 4 in DV table
 time = 30.01 Event_Recv_Pkt_On_Node 6 packet type is PING
-time = 30.01 Event_Recv_Pkt_On_Node 5 packet type is PING
-time = 30.01 Event_Recv_Pkt_On_Node 4 packet type is PING
-time = 30.01 Event_Recv_Pkt_On_Node 2 packet type is PING
 time = 30.01 Event_Recv_Pkt_On_Node 2 packet type is DV
-time = 30.01 Event_Xmit_Pkt_On_Link (5,3) packet type is DV
-time = 30.01 Event_Xmit_Pkt_On_Link (6,5) packet type is PONG
-time = 30.01 Event_Xmit_Pkt_On_Link (5,6) packet type is PONG
-time = 30.01 Event_Xmit_Pkt_On_Link (4,2) packet type is PONG
-time = 30.01 Event_Xmit_Pkt_On_Link (2,1) packet type is PONG
-time = 30.01 Event_Recv_Pkt_On_Node 2 packet type is PING
-time = 30.01 Event_Recv_Pkt_On_Node 1 packet type is PONG
-1 RTT to neighbor 4: 10
+time = 30.01 Event_Recv_Pkt_On_Node 5 packet type is PING
+time = 30.01 Event_Recv_Pkt_On_Node 1 packet type is PING
 time = 30.01 Event_Recv_Pkt_On_Node 5 packet type is PONG
 5 RTT to neighbor 3: 10
-time = 30.01 Event_Xmit_Pkt_On_Link (5,4) packet type is DV
-time = 30.01 Event_Xmit_Pkt_On_Link (2,4) packet type is PONG
-time = 30.01 Event_Xmit_Pkt_On_Link (1,4) packet type is DV
-time = 30.01 Event_Recv_Pkt_On_Node 6 packet type is DV
-time = 30.01 Event_Xmit_Pkt_On_Link (5,6) packet type is DV
-time = 30.01 Event_Xmit_Pkt_On_Link (1,3) packet type is DV
-time = 30.01 Event_Xmit_Pkt_On_Link (1,2) packet type is DV
-time = 30.01 Event_Recv_Pkt_On_Node 1 packet type is PING
-time = 30.01 Event_Xmit_Pkt_On_Link (5,4) packet type is DV
-time = 30.01 Event_Xmit_Pkt_On_Link (5,6) packet type is DV
+time = 30.01 Event_Xmit_Pkt_On_Link (6,5) packet type is PONG
 time = 30.01 Event_Xmit_Pkt_On_Link (1,2) packet type is PONG
-time = 30.01 Event_Recv_Pkt_On_Node 4 packet type is PONG
-4 RTT to neighbor 1: 10
-time = 30.01 Event_Recv_Pkt_On_Node 4 packet type is PONG
-4 RTT to neighbor 5: 10
-Updating cost to neighbor 5 in DV table
-time = 30.01 Event_Xmit_Pkt_On_Link (4,3) packet type is DV
-time = 30.01 Event_Xmit_Pkt_On_Link (4,1) packet type is DV
 time = 30.01 Event_Xmit_Pkt_On_Link (5,3) packet type is DV
+time = 30.01 Event_Recv_Pkt_On_Node 5 packet type is DV
+time = 30.01 Event_Recv_Pkt_On_Node 6 packet type is DV
+time = 30.01 Event_Recv_Pkt_On_Node 2 packet type is PING
+time = 30.01 Event_Recv_Pkt_On_Node 4 packet type is DV
+time = 30.01 Event_Xmit_Pkt_On_Link (5,6) packet type is DV
+time = 30.01 Event_Xmit_Pkt_On_Link (2,4) packet type is PONG
+time = 30.01 Event_Recv_Pkt_On_Node 2 packet type is PING
+time = 30.01 Event_Recv_Pkt_On_Node 2 packet type is DV
 time = 30.01 Event_Recv_Pkt_On_Node 3 packet type is PONG
 3 RTT to neighbor 5: 10
-time = 30.01 Event_Xmit_Pkt_On_Link (3,5) packet type is DV
-time = 30.01 Event_Xmit_Pkt_On_Link (4,2) packet type is DV
-time = 30.01 Event_Xmit_Pkt_On_Link (4,5) packet type is DV
-time = 30.01 Event_Xmit_Pkt_On_Link (4,3) packet type is DV
-time = 30.01 Event_Xmit_Pkt_On_Link (4,2) packet type is DV
-time = 30.01 Event_Recv_Pkt_On_Node 5 packet type is DV
-time = 30.01 Event_Xmit_Pkt_On_Link (4,1) packet type is DV
+time = 30.01 Event_Xmit_Pkt_On_Link (2,1) packet type is PONG
+time = 30.01 Event_Xmit_Pkt_On_Link (5,6) packet type is PONG
 time = 30.01 Event_Xmit_Pkt_On_Link (3,6) packet type is DV
 time = 30.01 Event_Xmit_Pkt_On_Link (3,1) packet type is DV
+time = 30.01 Event_Recv_Pkt_On_Node 4 packet type is PONG
+4 RTT to neighbor 1: 10
 time = 30.01 Event_Xmit_Pkt_On_Link (3,2) packet type is DV
 time = 30.01 Event_Xmit_Pkt_On_Link (3,4) packet type is DV
-time = 30.015 Event_Recv_Pkt_On_Node 3 packet type is DV
-time = 30.015 Event_Recv_Pkt_On_Node 3 packet type is DV
-time = 30.015 Event_Recv_Pkt_On_Node 5 packet type is DV
-time = 30.015 Event_Recv_Pkt_On_Node 5 packet type is DV
-time = 30.015 Event_Recv_Pkt_On_Node 4 packet type is PING
-time = 30.015 Event_Recv_Pkt_On_Node 2 packet type is DV
-time = 30.015 Event_Recv_Pkt_On_Node 3 packet type is PING
-time = 30.015 Event_Recv_Pkt_On_Node 3 packet type is DV
-time = 30.015 Event_Xmit_Pkt_On_Link (3,4) packet type is PONG
-time = 30.015 Event_Recv_Pkt_On_Node 4 packet type is DV
-time = 30.015 Event_Recv_Pkt_On_Node 4 packet type is DV
+time = 30.01 Event_Xmit_Pkt_On_Link (3,5) packet type is DV
+time = 30.01 Event_Xmit_Pkt_On_Link (4,3) packet type is DV
+time = 30.01 Event_Xmit_Pkt_On_Link (4,2) packet type is DV
+time = 30.01 Event_Recv_Pkt_On_Node 1 packet type is DV
+time = 30.01 Event_Recv_Pkt_On_Node 1 packet type is PONG
+1 RTT to neighbor 4: 10
+time = 30.01 Event_Xmit_Pkt_On_Link (4,1) packet type is DV
+time = 30.01 Event_Xmit_Pkt_On_Link (1,3) packet type is DV
+time = 30.01 Event_Recv_Pkt_On_Node 4 packet type is PING
+time = 30.01 Event_Xmit_Pkt_On_Link (1,2) packet type is DV
+time = 30.01 Event_Xmit_Pkt_On_Link (1,4) packet type is DV
+time = 30.01 Event_Xmit_Pkt_On_Link (4,2) packet type is PONG
 time = 30.015 Event_Recv_Pkt_On_Node 2 packet type is PING
+time = 30.015 Event_Recv_Pkt_On_Node 3 packet type is DV
 time = 30.015 Event_Recv_Pkt_On_Node 3 packet type is PING
 time = 30.015 Event_Recv_Pkt_On_Node 4 packet type is DV
-time = 30.015 Event_Recv_Pkt_On_Node 4 packet type is DV
-time = 30.015 Event_Xmit_Pkt_On_Link (2,3) packet type is PONG
-time = 30.015 Event_Xmit_Pkt_On_Link (3,2) packet type is PONG
-time = 30.015 Event_Recv_Pkt_On_Node 1 packet type is DV
+time = 30.015 Event_Xmit_Pkt_On_Link (3,4) packet type is PONG
+time = 30.015 Event_Recv_Pkt_On_Node 2 packet type is DV
+time = 30.015 Event_Recv_Pkt_On_Node 5 packet type is DV
+time = 30.015 Event_Recv_Pkt_On_Node 3 packet type is DV
+time = 30.015 Event_Recv_Pkt_On_Node 4 packet type is PING
 time = 30.015 Event_Recv_Pkt_On_Node 3 packet type is DV
 time = 30.015 Event_Xmit_Pkt_On_Link (4,3) packet type is PONG
 time = 30.015 Event_Recv_Pkt_On_Node 1 packet type is DV
-time = 30.02 Event_Recv_Pkt_On_Node 2 packet type is DV
-time = 30.02 Event_Recv_Pkt_On_Node 2 packet type is PONG
-2 RTT to neighbor 4: 20
-time = 30.02 Event_Recv_Pkt_On_Node 6 packet type is PONG
-6 RTT to neighbor 5: 20
+time = 30.015 Event_Recv_Pkt_On_Node 4 packet type is DV
+time = 30.015 Event_Xmit_Pkt_On_Link (2,3) packet type is PONG
+time = 30.015 Event_Recv_Pkt_On_Node 3 packet type is PING
+time = 30.015 Event_Xmit_Pkt_On_Link (3,2) packet type is PONG
 time = 30.02 Event_Recv_Pkt_On_Node 5 packet type is PONG
 5 RTT to neighbor 6: 20
+time = 30.02 Event_Recv_Pkt_On_Node 6 packet type is DV
 time = 30.02 Event_Recv_Pkt_On_Node 2 packet type is PONG
 2 RTT to neighbor 1: 20
+time = 30.02 Event_Recv_Pkt_On_Node 2 packet type is PONG
+2 RTT to neighbor 4: 20
+time = 30.02 Event_Recv_Pkt_On_Node 2 packet type is DV
 time = 30.02 Event_Xmit_Pkt_On_Link (2,4) packet type is DV
+time = 30.02 Event_Xmit_Pkt_On_Link (2,4) packet type is DV
+time = 30.02 Event_Xmit_Pkt_On_Link (2,1) packet type is DV
+time = 30.02 Event_Recv_Pkt_On_Node 2 packet type is DV
+time = 30.02 Event_Recv_Pkt_On_Node 6 packet type is PONG
+6 RTT to neighbor 5: 20
+time = 30.02 Event_Xmit_Pkt_On_Link (5,6) packet type is DV
+time = 30.02 Event_Xmit_Pkt_On_Link (2,3) packet type is DV
+time = 30.02 Event_Xmit_Pkt_On_Link (5,3) packet type is DV
+time = 30.02 Event_Xmit_Pkt_On_Link (2,1) packet type is DV
+time = 30.02 Event_Xmit_Pkt_On_Link (2,3) packet type is DV
 time = 30.02 Event_Xmit_Pkt_On_Link (6,5) packet type is DV
+time = 30.02 Event_Xmit_Pkt_On_Link (6,3) packet type is DV
 time = 30.02 Event_Recv_Pkt_On_Node 1 packet type is PONG
 1 RTT to neighbor 2: 20
 time = 30.02 Event_Recv_Pkt_On_Node 4 packet type is PONG
 4 RTT to neighbor 2: 20
-time = 30.02 Event_Xmit_Pkt_On_Link (2,3) packet type is DV
-time = 30.02 Event_Xmit_Pkt_On_Link (2,1) packet type is DV
-time = 30.02 Event_Xmit_Pkt_On_Link (6,3) packet type is DV
-time = 30.02 Event_Xmit_Pkt_On_Link (4,1) packet type is DV
-time = 30.02 Event_Recv_Pkt_On_Node 2 packet type is DV
-time = 30.02 Event_Recv_Pkt_On_Node 6 packet type is DV
-time = 30.02 Event_Xmit_Pkt_On_Link (5,4) packet type is DV
-time = 30.02 Event_Xmit_Pkt_On_Link (5,6) packet type is DV
-time = 30.02 Event_Xmit_Pkt_On_Link (5,3) packet type is DV
-time = 30.02 Event_Xmit_Pkt_On_Link (2,3) packet type is DV
-time = 30.02 Event_Xmit_Pkt_On_Link (2,1) packet type is DV
-time = 30.02 Event_Xmit_Pkt_On_Link (4,3) packet type is DV
-time = 30.02 Event_Recv_Pkt_On_Node 6 packet type is DV
-time = 30.02 Event_Xmit_Pkt_On_Link (2,4) packet type is DV
 time = 30.02 Event_Xmit_Pkt_On_Link (1,3) packet type is DV
 time = 30.02 Event_Xmit_Pkt_On_Link (1,2) packet type is DV
 time = 30.02 Event_Xmit_Pkt_On_Link (1,4) packet type is DV
-time = 30.02 Event_Xmit_Pkt_On_Link (4,5) packet type is DV
-time = 30.02 Event_Recv_Pkt_On_Node 2 packet type is DV
+time = 30.02 Event_Xmit_Pkt_On_Link (4,3) packet type is DV
 time = 30.02 Event_Xmit_Pkt_On_Link (4,2) packet type is DV
-time = 30.025 Event_Recv_Pkt_On_Node 4 packet type is DV
+time = 30.02 Event_Xmit_Pkt_On_Link (4,1) packet type is DV
+time = 30.025 Event_Recv_Pkt_On_Node 2 packet type is DV
+time = 30.025 Event_Recv_Pkt_On_Node 3 packet type is DV
+time = 30.025 Event_Recv_Pkt_On_Node 3 packet type is PING
+time = 30.025 Event_Recv_Pkt_On_Node 3 packet type is DV
+time = 30.025 Event_Recv_Pkt_On_Node 1 packet type is PING
+time = 30.025 Event_Recv_Pkt_On_Node 1 packet type is DV
+time = 30.025 Event_Recv_Pkt_On_Node 6 packet type is DV
 time = 30.025 Event_Recv_Pkt_On_Node 3 packet type is DV
 time = 30.025 Event_Recv_Pkt_On_Node 6 packet type is PING
-time = 30.025 Event_Recv_Pkt_On_Node 3 packet type is DV
-time = 30.025 Event_Recv_Pkt_On_Node 3 packet type is DV
-time = 30.025 Event_Recv_Pkt_On_Node 3 packet type is DV
-time = 30.025 Event_Xmit_Pkt_On_Link (6,3) packet type is PONG
-time = 30.025 Event_Recv_Pkt_On_Node 6 packet type is DV
-time = 30.025 Event_Recv_Pkt_On_Node 1 packet type is DV
-time = 30.025 Event_Recv_Pkt_On_Node 3 packet type is PING
-time = 30.025 Event_Recv_Pkt_On_Node 3 packet type is PING
-time = 30.025 Event_Recv_Pkt_On_Node 2 packet type is DV
 time = 30.025 Event_Xmit_Pkt_On_Link (3,6) packet type is PONG
-time = 30.025 Event_Xmit_Pkt_On_Link (3,1) packet type is PONG
-time = 30.025 Event_Recv_Pkt_On_Node 1 packet type is DV
+time = 30.025 Event_Xmit_Pkt_On_Link (1,3) packet type is PONG
+time = 30.025 Event_Xmit_Pkt_On_Link (6,3) packet type is PONG
 time = 30.025 Event_Recv_Pkt_On_Node 3 packet type is DV
 time = 30.025 Event_Recv_Pkt_On_Node 4 packet type is DV
+time = 30.025 Event_Recv_Pkt_On_Node 1 packet type is DV
+time = 30.025 Event_Recv_Pkt_On_Node 3 packet type is PING
+time = 30.025 Event_Xmit_Pkt_On_Link (3,1) packet type is PONG
 time = 30.025 Event_Recv_Pkt_On_Node 4 packet type is DV
-time = 30.025 Event_Recv_Pkt_On_Node 5 packet type is DV
-time = 30.025 Event_Recv_Pkt_On_Node 1 packet type is PING
-time = 30.025 Event_Xmit_Pkt_On_Link (1,3) packet type is PONG
-time = 30.03 Event_Recv_Pkt_On_Node 2 packet type is DV
-time = 30.03 Event_Recv_Pkt_On_Node 6 packet type is DV
 time = 30.03 Event_Recv_Pkt_On_Node 4 packet type is DV
-time = 30.03 Event_Recv_Pkt_On_Node 1 packet type is DV
-time = 30.03 Event_Recv_Pkt_On_Node 5 packet type is DV
+time = 30.03 Event_Recv_Pkt_On_Node 2 packet type is DV
 time = 30.03 Event_Recv_Pkt_On_Node 4 packet type is PONG
 4 RTT to neighbor 3: 30
-time = 30.03 Event_Xmit_Pkt_On_Link (4,5) packet type is DV
+Updating cost to neighbor 3 in DV table
+time = 30.03 Event_Recv_Pkt_On_Node 2 packet type is PONG
+2 RTT to neighbor 3: 30
+time = 30.03 Event_Recv_Pkt_On_Node 2 packet type is DV
+time = 30.03 Event_Recv_Pkt_On_Node 4 packet type is DV
 time = 30.03 Event_Xmit_Pkt_On_Link (4,3) packet type is DV
 time = 30.03 Event_Xmit_Pkt_On_Link (4,2) packet type is DV
 time = 30.03 Event_Xmit_Pkt_On_Link (4,1) packet type is DV
-time = 30.03 Event_Recv_Pkt_On_Node 3 packet type is PONG
-3 RTT to neighbor 4: 30
-time = 30.03 Event_Xmit_Pkt_On_Link (3,6) packet type is DV
-time = 30.03 Event_Xmit_Pkt_On_Link (3,1) packet type is DV
-time = 30.03 Event_Xmit_Pkt_On_Link (3,2) packet type is DV
-time = 30.03 Event_Xmit_Pkt_On_Link (3,4) packet type is DV
-time = 30.03 Event_Xmit_Pkt_On_Link (3,5) packet type is DV
+time = 30.03 Event_Xmit_Pkt_On_Link (2,1) packet type is DV
+time = 30.03 Event_Xmit_Pkt_On_Link (2,3) packet type is DV
 time = 30.03 Event_Recv_Pkt_On_Node 3 packet type is PONG
 3 RTT to neighbor 2: 30
 time = 30.03 Event_Xmit_Pkt_On_Link (3,6) packet type is DV
 time = 30.03 Event_Xmit_Pkt_On_Link (3,1) packet type is DV
+time = 30.03 Event_Xmit_Pkt_On_Link (3,5) packet type is DV
 time = 30.03 Event_Recv_Pkt_On_Node 1 packet type is DV
+time = 30.03 Event_Recv_Pkt_On_Node 3 packet type is PONG
+3 RTT to neighbor 4: 30
+Updating cost to neighbor 4 in DV table
+time = 30.03 Event_Recv_Pkt_On_Node 6 packet type is DV
+time = 30.03 Event_Xmit_Pkt_On_Link (2,4) packet type is DV
 time = 30.03 Event_Xmit_Pkt_On_Link (3,2) packet type is DV
 time = 30.03 Event_Xmit_Pkt_On_Link (3,4) packet type is DV
+time = 30.03 Event_Xmit_Pkt_On_Link (3,6) packet type is DV
 time = 30.03 Event_Xmit_Pkt_On_Link (3,5) packet type is DV
-time = 30.03 Event_Recv_Pkt_On_Node 2 packet type is PONG
-2 RTT to neighbor 3: 30
-time = 30.03 Event_Recv_Pkt_On_Node 2 packet type is DV
-time = 30.03 Event_Xmit_Pkt_On_Link (2,3) packet type is DV
-time = 30.03 Event_Xmit_Pkt_On_Link (2,1) packet type is DV
-time = 30.03 Event_Xmit_Pkt_On_Link (2,4) packet type is DV
-time = 30.03 Event_Recv_Pkt_On_Node 4 packet type is DV
-time = 30.035 Event_Recv_Pkt_On_Node 3 packet type is DV
-time = 30.035 Event_Recv_Pkt_On_Node 1 packet type is DV
-time = 30.035 Event_Recv_Pkt_On_Node 1 packet type is DV
-time = 30.035 Event_Recv_Pkt_On_Node 5 packet type is DV
+time = 30.03 Event_Recv_Pkt_On_Node 1 packet type is DV
+time = 30.03 Event_Xmit_Pkt_On_Link (3,1) packet type is DV
+time = 30.03 Event_Xmit_Pkt_On_Link (3,2) packet type is DV
+time = 30.03 Event_Recv_Pkt_On_Node 5 packet type is DV
+time = 30.03 Event_Xmit_Pkt_On_Link (3,4) packet type is DV
 time = 30.035 Event_Recv_Pkt_On_Node 3 packet type is DV
 time = 30.035 Event_Recv_Pkt_On_Node 6 packet type is DV
-time = 30.035 Event_Recv_Pkt_On_Node 5 packet type is DV
+time = 30.035 Event_Recv_Pkt_On_Node 3 packet type is DV
+time = 30.035 Event_Recv_Pkt_On_Node 1 packet type is DV
 time = 30.035 Event_Recv_Pkt_On_Node 3 packet type is DV
 time = 30.035 Event_Recv_Pkt_On_Node 5 packet type is DV
 time = 30.035 Event_Recv_Pkt_On_Node 3 packet type is DV
+time = 30.035 Event_Recv_Pkt_On_Node 5 packet type is DV
+time = 30.035 Event_Recv_Pkt_On_Node 1 packet type is DV
+time = 30.04 Event_Recv_Pkt_On_Node 1 packet type is DV
 time = 30.04 Event_Recv_Pkt_On_Node 2 packet type is DV
 time = 30.04 Event_Recv_Pkt_On_Node 4 packet type is DV
-time = 30.04 Event_Recv_Pkt_On_Node 1 packet type is DV
 time = 30.045 Event_Recv_Pkt_On_Node 3 packet type is DV
-time = 30.045 Event_Recv_Pkt_On_Node 3 packet type is DV
-time = 30.045 Event_Recv_Pkt_On_Node 4 packet type is DV
 time = 30.045 Event_Recv_Pkt_On_Node 3 packet type is DV
 time = 30.045 Event_Recv_Pkt_On_Node 2 packet type is DV
 time = 30.045 Event_Recv_Pkt_On_Node 3 packet type is DV
 time = 30.045 Event_Recv_Pkt_On_Node 4 packet type is DV
 time = 30.045 Event_Recv_Pkt_On_Node 2 packet type is DV
+time = 30.045 Event_Recv_Pkt_On_Node 4 packet type is DV
+time = 30.045 Event_Recv_Pkt_On_Node 3 packet type is DV
+time = 30.05 Event_Recv_Pkt_On_Node 1 packet type is PONG
+1 RTT to neighbor 3: 50
+time = 30.05 Event_Xmit_Pkt_On_Link (1,4) packet type is DV
 time = 30.05 Event_Recv_Pkt_On_Node 3 packet type is PONG
 3 RTT to neighbor 1: 50
-time = 30.05 Event_Recv_Pkt_On_Node 3 packet type is PONG
-3 RTT to neighbor 6: 50
-time = 30.05 Event_Xmit_Pkt_On_Link (3,5) packet type is DV
 time = 30.05 Event_Xmit_Pkt_On_Link (3,6) packet type is DV
 time = 30.05 Event_Xmit_Pkt_On_Link (3,1) packet type is DV
 time = 30.05 Event_Xmit_Pkt_On_Link (3,2) packet type is DV
 time = 30.05 Event_Xmit_Pkt_On_Link (3,4) packet type is DV
 time = 30.05 Event_Xmit_Pkt_On_Link (3,5) packet type is DV
-time = 30.05 Event_Recv_Pkt_On_Node 1 packet type is PONG
-1 RTT to neighbor 3: 50
-time = 30.05 Event_Xmit_Pkt_On_Link (1,3) packet type is DV
-time = 30.05 Event_Xmit_Pkt_On_Link (1,2) packet type is DV
-time = 30.05 Event_Xmit_Pkt_On_Link (1,4) packet type is DV
+time = 30.05 Event_Recv_Pkt_On_Node 3 packet type is PONG
+3 RTT to neighbor 6: 50
+time = 30.05 Event_Xmit_Pkt_On_Link (3,6) packet type is DV
+time = 30.05 Event_Xmit_Pkt_On_Link (3,1) packet type is DV
+time = 30.05 Event_Xmit_Pkt_On_Link (3,2) packet type is DV
+time = 30.05 Event_Xmit_Pkt_On_Link (3,4) packet type is DV
+time = 30.05 Event_Xmit_Pkt_On_Link (3,5) packet type is DV
 time = 30.05 Event_Recv_Pkt_On_Node 6 packet type is PONG
 6 RTT to neighbor 3: 50
 time = 30.05 Event_Xmit_Pkt_On_Link (6,3) packet type is DV
 time = 30.05 Event_Xmit_Pkt_On_Link (6,5) packet type is DV
-time = 30.05 Event_Xmit_Pkt_On_Link (3,6) packet type is DV
-time = 30.05 Event_Xmit_Pkt_On_Link (3,1) packet type is DV
-time = 30.05 Event_Xmit_Pkt_On_Link (3,2) packet type is DV
-time = 30.05 Event_Xmit_Pkt_On_Link (3,4) packet type is DV
-time = 30.055 Event_Recv_Pkt_On_Node 5 packet type is DV
+time = 30.05 Event_Xmit_Pkt_On_Link (1,3) packet type is DV
+time = 30.05 Event_Xmit_Pkt_On_Link (1,2) packet type is DV
 time = 30.055 Event_Recv_Pkt_On_Node 5 packet type is DV
 time = 30.055 Event_Recv_Pkt_On_Node 4 packet type is DV
-time = 30.055 Event_Recv_Pkt_On_Node 6 packet type is DV
-time = 30.055 Event_Recv_Pkt_On_Node 6 packet type is DV
 time = 30.055 Event_Recv_Pkt_On_Node 1 packet type is DV
+time = 30.055 Event_Recv_Pkt_On_Node 5 packet type is DV
+time = 30.055 Event_Recv_Pkt_On_Node 6 packet type is DV
+time = 30.055 Event_Recv_Pkt_On_Node 6 packet type is DV
 time = 30.055 Event_Recv_Pkt_On_Node 1 packet type is DV
 time = 30.06 Event_Recv_Pkt_On_Node 2 packet type is DV
 time = 30.06 Event_Recv_Pkt_On_Node 5 packet type is DV
 time = 30.065 Event_Recv_Pkt_On_Node 2 packet type is DV
-time = 30.065 Event_Recv_Pkt_On_Node 4 packet type is DV
-time = 30.065 Event_Recv_Pkt_On_Node 4 packet type is DV
 time = 30.065 Event_Recv_Pkt_On_Node 2 packet type is DV
-time = 30.075 Event_Recv_Pkt_On_Node 6 packet type is DV
-time = 30.075 Event_Recv_Pkt_On_Node 1 packet type is DV
-time = 30.075 Event_Recv_Pkt_On_Node 3 packet type is DV
-time = 30.075 Event_Recv_Pkt_On_Node 3 packet type is DV
+time = 30.065 Event_Recv_Pkt_On_Node 4 packet type is DV
+time = 30.065 Event_Recv_Pkt_On_Node 4 packet type is DV
 time = 30.075 Event_Recv_Pkt_On_Node 1 packet type is DV
 time = 30.075 Event_Recv_Pkt_On_Node 6 packet type is DV
-time = 31 Event_Alarm on node 5
+time = 30.075 Event_Recv_Pkt_On_Node 3 packet type is DV
+time = 30.075 Event_Recv_Pkt_On_Node 1 packet type is DV
+time = 30.075 Event_Recv_Pkt_On_Node 3 packet type is DV
+time = 30.075 Event_Recv_Pkt_On_Node 6 packet type is DV
+time = 31 Event_Alarm on node 2
 time = 31 Event_Alarm on node 1
 time = 31 Event_Alarm on node 3
-time = 31 Event_Alarm on node 2
+time = 31 Event_Alarm on node 5
 time = 31 Event_Alarm on node 4
 time = 31 Event_Alarm on node 6
-time = 32 Event_Alarm on node 5
-time = 32 Event_Alarm on node 3
-time = 32 Event_Alarm on node 2
-time = 32 Event_Alarm on node 6
 time = 32 Event_Alarm on node 1
+time = 32 Event_Alarm on node 5
+time = 32 Event_Alarm on node 6
+time = 32 Event_Alarm on node 2
+time = 32 Event_Alarm on node 3
 time = 32 Event_Alarm on node 4
-time = 33 Event_Xmit_Data_Pkt source node 1 destination node 6 packet type is DATA
-time = 33 Event_Alarm on node 6
-time = 33 Event_Alarm on node 4
-time = 33 Event_Xmit_Pkt_On_Link (1,4) packet type is DATA
-time = 33 Event_Alarm on node 5
-time = 33 Event_Alarm on node 2
-time = 33 Event_Alarm on node 3
 time = 33 Event_Alarm on node 1
-time = 33.005 Event_Recv_Pkt_On_Node 4 packet type is DATA
-time = 33.005 Event_Xmit_Pkt_On_Link (4,5) packet type is DATA
-time = 33.01 Event_Recv_Pkt_On_Node 5 packet type is DATA
-time = 33.01 Event_Xmit_Pkt_On_Link (5,6) packet type is DATA
-time = 33.02 Event_Recv_Pkt_On_Node 6 packet type is DATA
-Packet is received and freed
-time = 34 Event_Alarm on node 6
+time = 33 Event_Alarm on node 2
+time = 33 Event_Alarm on node 4
+time = 33 Event_Alarm on node 5
+time = 33 Event_Alarm on node 6
+time = 33 Event_Alarm on node 3
 time = 34 Event_Alarm on node 1
 time = 34 Event_Alarm on node 5
+time = 34 Event_Alarm on node 3
 time = 34 Event_Alarm on node 2
 time = 34 Event_Alarm on node 4
-time = 34 Event_Alarm on node 3
-time = 35 Event_Alarm on node 6
+time = 34 Event_Xmit_Data_Pkt source node 1 destination node 6 packet type is DATA
+1
+destionation: 6 , next hop router: 4 , port: 2 , cost: 70 , last_updated_at: 30035
+destionation: 3 , next hop router: 4 , port: 2 , cost: 40 , last_updated_at: 30035
+destionation: 2 , next hop router: 2 , port: 0 , cost: 20 , last_updated_at: 20
+destionation: 5 , next hop router: 4 , port: 2 , cost: 50 , last_updated_at: 30035
+destionation: 4 , next hop router: 4 , port: 2 , cost: 10 , last_updated_at: 10
+destionation: 1 , next hop router: 1 , port: 0 , cost: 0 , last_updated_at: 0
+
+time = 34 Event_Xmit_Pkt_On_Link (1,4) packet type is DATA
+time = 34 Event_Alarm on node 6
+time = 34.005 Event_Recv_Pkt_On_Node 4 packet type is DATA
+4
+destionation: 6 , next hop router: 3 , port: 2 , cost: 60 , last_updated_at: 30030
+destionation: 2 , next hop router: 2 , port: 1 , cost: 20 , last_updated_at: 20
+destionation: 3 , next hop router: 3 , port: 2 , cost: 30 , last_updated_at: 30030
+destionation: 1 , next hop router: 1 , port: 0 , cost: 10 , last_updated_at: 10
+destionation: 5 , next hop router: 3 , port: 2 , cost: 40 , last_updated_at: 30030
+destionation: 4 , next hop router: 4 , port: 0 , cost: 0 , last_updated_at: 0
+
+time = 34.005 Event_Xmit_Pkt_On_Link (4,3) packet type is DATA
+time = 34.02 Event_Recv_Pkt_On_Node 3 packet type is DATA
+3
+destionation: 2 , next hop router: 2 , port: 1 , cost: 30 , last_updated_at: 30
+destionation: 1 , next hop router: 4 , port: 2 , cost: 40 , last_updated_at: 30035
+destionation: 6 , next hop router: 5 , port: 3 , cost: 30 , last_updated_at: 25
+destionation: 4 , next hop router: 4 , port: 2 , cost: 30 , last_updated_at: 30030
+destionation: 5 , next hop router: 5 , port: 3 , cost: 10 , last_updated_at: 10
+destionation: 3 , next hop router: 3 , port: 0 , cost: 0 , last_updated_at: 0
+
+time = 34.02 Event_Xmit_Pkt_On_Link (3,5) packet type is DATA
+time = 34.025 Event_Recv_Pkt_On_Node 5 packet type is DATA
+5
+destionation: 2 , next hop router: 3 , port: 0 , cost: 40 , last_updated_at: 30005
+destionation: 6 , next hop router: 6 , port: 2 , cost: 20 , last_updated_at: 20
+destionation: 1 , next hop router: 3 , port: 0 , cost: 50 , last_updated_at: 30055
+destionation: 3 , next hop router: 3 , port: 0 , cost: 10 , last_updated_at: 10
+destionation: 4 , next hop router: 3 , port: 0 , cost: 40 , last_updated_at: 30035
+destionation: 5 , next hop router: 5 , port: 0 , cost: 0 , last_updated_at: 0
+
+time = 34.025 Event_Xmit_Pkt_On_Link (5,6) packet type is DATA
+time = 34.035 Event_Recv_Pkt_On_Node 6 packet type is DATA
+6
+destionation: 2 , next hop router: 5 , port: 1 , cost: 60 , last_updated_at: 30020
+destionation: 4 , next hop router: 3 , port: 0 , cost: 60 , last_updated_at: 30055
+destionation: 3 , next hop router: 5 , port: 1 , cost: 30 , last_updated_at: 30
+destionation: 5 , next hop router: 5 , port: 1 , cost: 20 , last_updated_at: 20
+destionation: 1 , next hop router: 3 , port: 0 , cost: 70 , last_updated_at: 30075
+destionation: 6 , next hop router: 6 , port: 0 , cost: 0 , last_updated_at: 0
+
+Packet is received and freed
 time = 35 Event_Alarm on node 1
 time = 35 Event_Alarm on node 2
+time = 35 Event_Alarm on node 6
 time = 35 Event_Alarm on node 3
-time = 35 Event_Alarm on node 5
+time = 35 Event_Link_Come_Up (4,5)
 time = 35 Event_Alarm on node 4
+time = 35 Event_Alarm on node 5
+time = 36 Event_Alarm on node 1
+time = 36 Event_Alarm on node 2
 time = 36 Event_Alarm on node 6
+time = 36 Event_Alarm on node 5
+time = 36 Event_Alarm on node 3
+time = 36 Event_Alarm on node 4
+time = 37 Event_Alarm on node 1
+time = 37 Event_Alarm on node 2
+time = 37 Event_Alarm on node 6
+time = 37 Event_Alarm on node 4
+time = 37 Event_Alarm on node 5
+time = 37 Event_Alarm on node 3
+time = 38 Event_Alarm on node 1
+time = 38 Event_Alarm on node 2
+time = 38 Event_Alarm on node 6
+time = 38 Event_Alarm on node 3
+time = 38 Event_Alarm on node 4
+time = 38 Event_Alarm on node 5
+time = 39 Event_Alarm on node 1
+time = 39 Event_Alarm on node 2
+time = 39 Event_Alarm on node 6
+time = 39 Event_Alarm on node 5
+time = 39 Event_Alarm on node 3
+time = 39 Event_Alarm on node 4
+time = 40 Event_Alarm on node 4
+time = 40 Event_Alarm on node 5
+time = 40 Event_Alarm on node 6
+time = 40 Event_Alarm on node 4
+time = 40 Event_Alarm on node 1
+time = 40 Event_Alarm on node 2
+time = 40 Event_Xmit_Pkt_On_Link (4,1) packet type is PING
+time = 40 Event_Xmit_Pkt_On_Link (4,2) packet type is PING
+time = 40 Event_Alarm on node 6
+time = 40 Event_Xmit_Pkt_On_Link (4,3) packet type is PING
+time = 40 Event_Xmit_Pkt_On_Link (4,5) packet type is PING
+time = 40 Event_Alarm on node 3
+time = 40 Event_Xmit_Pkt_On_Link (3,5) packet type is PING
+time = 40 Event_Xmit_Pkt_On_Link (3,6) packet type is PING
+time = 40 Event_Alarm on node 1
+time = 40 Event_Xmit_Pkt_On_Link (1,2) packet type is PING
+time = 40 Event_Xmit_Pkt_On_Link (1,3) packet type is PING
+time = 40 Event_Xmit_Pkt_On_Link (1,4) packet type is PING
+time = 40 Event_Xmit_Pkt_On_Link (5,3) packet type is PING
+time = 40 Event_Xmit_Pkt_On_Link (5,4) packet type is PING
+time = 40 Event_Alarm on node 3
+time = 40 Event_Xmit_Pkt_On_Link (5,6) packet type is PING
+time = 40 Event_Xmit_Pkt_On_Link (6,3) packet type is PING
+time = 40 Event_Alarm on node 2
+time = 40 Event_Xmit_Pkt_On_Link (2,1) packet type is PING
+time = 40 Event_Xmit_Pkt_On_Link (2,3) packet type is PING
+time = 40 Event_Xmit_Pkt_On_Link (2,4) packet type is PING
+time = 40 Event_Alarm on node 5
+time = 40 Event_Xmit_Pkt_On_Link (6,5) packet type is PING
+time = 40 Event_Xmit_Pkt_On_Link (3,1) packet type is PING
+time = 40 Event_Xmit_Pkt_On_Link (3,2) packet type is PING
+time = 40 Event_Xmit_Pkt_On_Link (3,4) packet type is PING
+time = 40.005 Event_Recv_Pkt_On_Node 4 packet type is PING
+time = 40.005 Event_Recv_Pkt_On_Node 3 packet type is PING
+time = 40.005 Event_Recv_Pkt_On_Node 1 packet type is PING
+time = 40.005 Event_Recv_Pkt_On_Node 5 packet type is PING
+time = 40.005 Event_Xmit_Pkt_On_Link (4,1) packet type is PONG
+time = 40.005 Event_Xmit_Pkt_On_Link (3,5) packet type is PONG
+time = 40.005 Event_Xmit_Pkt_On_Link (1,4) packet type is PONG
+time = 40.005 Event_Xmit_Pkt_On_Link (5,3) packet type is PONG
+time = 40.005 Event_Recv_Pkt_On_Node 5 packet type is PING
+time = 40.005 Event_Xmit_Pkt_On_Link (5,4) packet type is PONG
+time = 40.005 Event_Recv_Pkt_On_Node 4 packet type is PING
+time = 40.005 Event_Xmit_Pkt_On_Link (4,5) packet type is PONG
+time = 40.01 Event_Recv_Pkt_On_Node 4 packet type is PONG
+4 RTT to neighbor 1: 10
+time = 40.01 Event_Recv_Pkt_On_Node 5 packet type is PONG
+5 RTT to neighbor 3: 10
+time = 40.01 Event_Recv_Pkt_On_Node 1 packet type is PONG
+1 RTT to neighbor 4: 10
+time = 40.01 Event_Recv_Pkt_On_Node 5 packet type is PONG
+5 RTT to neighbor 4: 10
+Updating cost to neighbor 4 in DV table
+time = 40.01 Event_Xmit_Pkt_On_Link (5,3) packet type is DV
+time = 40.01 Event_Recv_Pkt_On_Node 1 packet type is PING
+time = 40.01 Event_Recv_Pkt_On_Node 4 packet type is PING
+time = 40.01 Event_Recv_Pkt_On_Node 2 packet type is PING
+time = 40.01 Event_Xmit_Pkt_On_Link (4,3) packet type is DV
+time = 40.01 Event_Xmit_Pkt_On_Link (5,3) packet type is DV
+time = 40.01 Event_Xmit_Pkt_On_Link (4,2) packet type is DV
+time = 40.01 Event_Xmit_Pkt_On_Link (1,2) packet type is PONG
+time = 40.01 Event_Xmit_Pkt_On_Link (4,2) packet type is PONG
+time = 40.01 Event_Xmit_Pkt_On_Link (2,4) packet type is PONG
+time = 40.01 Event_Xmit_Pkt_On_Link (4,1) packet type is DV
+time = 40.01 Event_Xmit_Pkt_On_Link (5,6) packet type is DV
+time = 40.01 Event_Xmit_Pkt_On_Link (1,3) packet type is DV
+time = 40.01 Event_Xmit_Pkt_On_Link (1,2) packet type is DV
+time = 40.01 Event_Xmit_Pkt_On_Link (1,4) packet type is DV
+time = 40.01 Event_Xmit_Pkt_On_Link (5,4) packet type is DV
+time = 40.01 Event_Xmit_Pkt_On_Link (5,6) packet type is DV
+time = 40.01 Event_Recv_Pkt_On_Node 2 packet type is PING
+time = 40.01 Event_Xmit_Pkt_On_Link (2,1) packet type is PONG
+time = 40.01 Event_Recv_Pkt_On_Node 3 packet type is PONG
+3 RTT to neighbor 5: 10
+time = 40.01 Event_Xmit_Pkt_On_Link (3,6) packet type is DV
+time = 40.01 Event_Xmit_Pkt_On_Link (3,5) packet type is DV
+time = 40.01 Event_Recv_Pkt_On_Node 4 packet type is PONG
+4 RTT to neighbor 5: 10
+Updating cost to neighbor 5 in DV table
+time = 40.01 Event_Xmit_Pkt_On_Link (3,1) packet type is DV
+time = 40.01 Event_Xmit_Pkt_On_Link (3,2) packet type is DV
+time = 40.01 Event_Xmit_Pkt_On_Link (3,4) packet type is DV
+time = 40.01 Event_Xmit_Pkt_On_Link (4,5) packet type is DV
+time = 40.01 Event_Xmit_Pkt_On_Link (4,3) packet type is DV
+time = 40.01 Event_Xmit_Pkt_On_Link (4,2) packet type is DV
+time = 40.01 Event_Xmit_Pkt_On_Link (4,1) packet type is DV
+time = 40.01 Event_Recv_Pkt_On_Node 6 packet type is PING
+time = 40.01 Event_Recv_Pkt_On_Node 5 packet type is PING
+time = 40.01 Event_Xmit_Pkt_On_Link (6,5) packet type is PONG
+time = 40.01 Event_Xmit_Pkt_On_Link (5,6) packet type is PONG
+time = 40.015 Event_Recv_Pkt_On_Node 4 packet type is DV
+time = 40.015 Event_Recv_Pkt_On_Node 4 packet type is DV
+time = 40.015 Event_Recv_Pkt_On_Node 3 packet type is PING
+time = 40.015 Event_Recv_Pkt_On_Node 3 packet type is DV
+time = 40.015 Event_Recv_Pkt_On_Node 4 packet type is PING
+time = 40.015 Event_Recv_Pkt_On_Node 3 packet type is DV
+time = 40.015 Event_Recv_Pkt_On_Node 1 packet type is DV
+time = 40.015 Event_Recv_Pkt_On_Node 1 packet type is DV
+time = 40.015 Event_Recv_Pkt_On_Node 5 packet type is DV
+time = 40.015 Event_Xmit_Pkt_On_Link (4,3) packet type is PONG
+time = 40.015 Event_Recv_Pkt_On_Node 5 packet type is DV
+time = 40.015 Event_Xmit_Pkt_On_Link (3,4) packet type is PONG
+time = 40.015 Event_Recv_Pkt_On_Node 2 packet type is PING
+time = 40.015 Event_Xmit_Pkt_On_Link (2,3) packet type is PONG
+time = 40.015 Event_Recv_Pkt_On_Node 3 packet type is PING
+time = 40.015 Event_Xmit_Pkt_On_Link (3,2) packet type is PONG
+time = 40.02 Event_Recv_Pkt_On_Node 6 packet type is PONG
+6 RTT to neighbor 5: 20
+time = 40.02 Event_Recv_Pkt_On_Node 5 packet type is PONG
+5 RTT to neighbor 6: 20
+time = 40.02 Event_Recv_Pkt_On_Node 6 packet type is DV
+time = 40.02 Event_Recv_Pkt_On_Node 6 packet type is DV
+time = 40.02 Event_Recv_Pkt_On_Node 2 packet type is DV
+time = 40.02 Event_Recv_Pkt_On_Node 2 packet type is PONG
+2 RTT to neighbor 4: 20
+time = 40.02 Event_Xmit_Pkt_On_Link (6,5) packet type is DV
+time = 40.02 Event_Recv_Pkt_On_Node 2 packet type is PONG
+2 RTT to neighbor 1: 20
+time = 40.02 Event_Xmit_Pkt_On_Link (5,4) packet type is DV
+time = 40.02 Event_Xmit_Pkt_On_Link (6,3) packet type is DV
+time = 40.02 Event_Recv_Pkt_On_Node 2 packet type is DV
+time = 40.02 Event_Recv_Pkt_On_Node 4 packet type is PONG
+4 RTT to neighbor 2: 20
+time = 40.02 Event_Xmit_Pkt_On_Link (2,3) packet type is DV
+time = 40.02 Event_Xmit_Pkt_On_Link (2,1) packet type is DV
+time = 40.02 Event_Xmit_Pkt_On_Link (2,1) packet type is DV
+time = 40.02 Event_Recv_Pkt_On_Node 1 packet type is PONG
+1 RTT to neighbor 2: 20
+time = 40.02 Event_Xmit_Pkt_On_Link (5,6) packet type is DV
+time = 40.02 Event_Xmit_Pkt_On_Link (5,3) packet type is DV
+time = 40.02 Event_Xmit_Pkt_On_Link (2,4) packet type is DV
+time = 40.02 Event_Xmit_Pkt_On_Link (2,3) packet type is DV
+time = 40.02 Event_Xmit_Pkt_On_Link (4,5) packet type is DV
+time = 40.02 Event_Xmit_Pkt_On_Link (2,4) packet type is DV
+time = 40.02 Event_Xmit_Pkt_On_Link (4,3) packet type is DV
+time = 40.02 Event_Xmit_Pkt_On_Link (4,2) packet type is DV
+time = 40.02 Event_Xmit_Pkt_On_Link (4,1) packet type is DV
+time = 40.02 Event_Xmit_Pkt_On_Link (1,3) packet type is DV
+time = 40.02 Event_Xmit_Pkt_On_Link (1,2) packet type is DV
+time = 40.02 Event_Xmit_Pkt_On_Link (1,4) packet type is DV
+time = 40.02 Event_Recv_Pkt_On_Node 2 packet type is DV
+time = 40.025 Event_Recv_Pkt_On_Node 6 packet type is PING
+time = 40.025 Event_Recv_Pkt_On_Node 2 packet type is DV
+time = 40.025 Event_Recv_Pkt_On_Node 3 packet type is DV
+time = 40.025 Event_Recv_Pkt_On_Node 3 packet type is PING
+time = 40.025 Event_Recv_Pkt_On_Node 3 packet type is DV
+time = 40.025 Event_Recv_Pkt_On_Node 4 packet type is DV
+time = 40.025 Event_Recv_Pkt_On_Node 3 packet type is DV
+time = 40.025 Event_Recv_Pkt_On_Node 5 packet type is DV
+time = 40.025 Event_Xmit_Pkt_On_Link (3,1) packet type is PONG
+time = 40.025 Event_Recv_Pkt_On_Node 1 packet type is DV
+time = 40.025 Event_Xmit_Pkt_On_Link (6,3) packet type is PONG
+time = 40.025 Event_Recv_Pkt_On_Node 4 packet type is DV
+time = 40.025 Event_Recv_Pkt_On_Node 1 packet type is PING
+time = 40.025 Event_Xmit_Pkt_On_Link (1,3) packet type is PONG
+time = 40.025 Event_Recv_Pkt_On_Node 3 packet type is PING
+time = 40.025 Event_Xmit_Pkt_On_Link (3,6) packet type is PONG
+time = 40.025 Event_Recv_Pkt_On_Node 4 packet type is DV
+time = 40.03 Event_Recv_Pkt_On_Node 1 packet type is DV
+time = 40.03 Event_Recv_Pkt_On_Node 3 packet type is PONG
+3 RTT to neighbor 4: 30
+time = 40.03 Event_Recv_Pkt_On_Node 4 packet type is DV
+time = 40.03 Event_Recv_Pkt_On_Node 4 packet type is DV
+time = 40.03 Event_Xmit_Pkt_On_Link (3,6) packet type is DV
+time = 40.03 Event_Xmit_Pkt_On_Link (3,5) packet type is DV
+time = 40.03 Event_Recv_Pkt_On_Node 5 packet type is DV
+time = 40.03 Event_Recv_Pkt_On_Node 2 packet type is PONG
+2 RTT to neighbor 3: 30
+time = 40.03 Event_Xmit_Pkt_On_Link (3,1) packet type is DV
+time = 40.03 Event_Xmit_Pkt_On_Link (3,2) packet type is DV
+time = 40.03 Event_Xmit_Pkt_On_Link (3,4) packet type is DV
+time = 40.03 Event_Xmit_Pkt_On_Link (2,3) packet type is DV
+time = 40.03 Event_Xmit_Pkt_On_Link (2,1) packet type is DV
+time = 40.03 Event_Xmit_Pkt_On_Link (2,4) packet type is DV
+time = 40.03 Event_Recv_Pkt_On_Node 6 packet type is DV
+time = 40.03 Event_Recv_Pkt_On_Node 2 packet type is DV
+time = 40.03 Event_Recv_Pkt_On_Node 1 packet type is DV
+time = 40.03 Event_Recv_Pkt_On_Node 3 packet type is PONG
+3 RTT to neighbor 2: 30
+time = 40.03 Event_Xmit_Pkt_On_Link (3,6) packet type is DV
+time = 40.03 Event_Xmit_Pkt_On_Link (3,1) packet type is DV
+time = 40.03 Event_Xmit_Pkt_On_Link (3,2) packet type is DV
+time = 40.03 Event_Xmit_Pkt_On_Link (3,4) packet type is DV
+time = 40.03 Event_Xmit_Pkt_On_Link (3,5) packet type is DV
+time = 40.03 Event_Recv_Pkt_On_Node 4 packet type is PONG
+4 RTT to neighbor 3: 30
+time = 40.03 Event_Xmit_Pkt_On_Link (4,5) packet type is DV
+time = 40.03 Event_Recv_Pkt_On_Node 2 packet type is DV
+time = 40.03 Event_Xmit_Pkt_On_Link (4,3) packet type is DV
+time = 40.03 Event_Xmit_Pkt_On_Link (4,2) packet type is DV
+time = 40.03 Event_Xmit_Pkt_On_Link (4,1) packet type is DV
+time = 40.035 Event_Recv_Pkt_On_Node 3 packet type is DV
+time = 40.035 Event_Recv_Pkt_On_Node 3 packet type is DV
+time = 40.035 Event_Recv_Pkt_On_Node 3 packet type is DV
+time = 40.035 Event_Recv_Pkt_On_Node 3 packet type is DV
+time = 40.035 Event_Recv_Pkt_On_Node 5 packet type is DV
+time = 40.035 Event_Recv_Pkt_On_Node 6 packet type is DV
+time = 40.035 Event_Recv_Pkt_On_Node 5 packet type is DV
+time = 40.035 Event_Recv_Pkt_On_Node 5 packet type is DV
+time = 40.035 Event_Recv_Pkt_On_Node 1 packet type is DV
+time = 40.035 Event_Recv_Pkt_On_Node 1 packet type is DV
+time = 40.04 Event_Recv_Pkt_On_Node 4 packet type is DV
+time = 40.04 Event_Recv_Pkt_On_Node 2 packet type is DV
+time = 40.04 Event_Recv_Pkt_On_Node 1 packet type is DV
+time = 40.045 Event_Recv_Pkt_On_Node 2 packet type is DV
+time = 40.045 Event_Recv_Pkt_On_Node 4 packet type is DV
+time = 40.045 Event_Recv_Pkt_On_Node 3 packet type is DV
+time = 40.045 Event_Recv_Pkt_On_Node 3 packet type is DV
+time = 40.045 Event_Recv_Pkt_On_Node 3 packet type is DV
+time = 40.045 Event_Recv_Pkt_On_Node 2 packet type is DV
+time = 40.045 Event_Recv_Pkt_On_Node 4 packet type is DV
+time = 40.045 Event_Recv_Pkt_On_Node 3 packet type is DV
+time = 40.05 Event_Recv_Pkt_On_Node 6 packet type is PONG
+6 RTT to neighbor 3: 50
+time = 40.05 Event_Recv_Pkt_On_Node 1 packet type is PONG
+1 RTT to neighbor 3: 50
+time = 40.05 Event_Recv_Pkt_On_Node 3 packet type is PONG
+3 RTT to neighbor 6: 50
+time = 40.05 Event_Xmit_Pkt_On_Link (3,1) packet type is DV
+time = 40.05 Event_Xmit_Pkt_On_Link (3,2) packet type is DV
+time = 40.05 Event_Xmit_Pkt_On_Link (3,4) packet type is DV
+time = 40.05 Event_Xmit_Pkt_On_Link (3,5) packet type is DV
+time = 40.05 Event_Recv_Pkt_On_Node 3 packet type is PONG
+3 RTT to neighbor 1: 50
+time = 40.05 Event_Xmit_Pkt_On_Link (3,6) packet type is DV
+time = 40.05 Event_Xmit_Pkt_On_Link (3,1) packet type is DV
+time = 40.05 Event_Xmit_Pkt_On_Link (3,2) packet type is DV
+time = 40.05 Event_Xmit_Pkt_On_Link (3,4) packet type is DV
+time = 40.05 Event_Xmit_Pkt_On_Link (3,5) packet type is DV
+time = 40.05 Event_Xmit_Pkt_On_Link (6,3) packet type is DV
+time = 40.05 Event_Xmit_Pkt_On_Link (6,5) packet type is DV
+time = 40.05 Event_Xmit_Pkt_On_Link (1,4) packet type is DV
+time = 40.05 Event_Xmit_Pkt_On_Link (1,3) packet type is DV
+time = 40.05 Event_Xmit_Pkt_On_Link (1,2) packet type is DV
+time = 40.05 Event_Xmit_Pkt_On_Link (3,6) packet type is DV
+time = 40.055 Event_Recv_Pkt_On_Node 5 packet type is DV
+time = 40.055 Event_Recv_Pkt_On_Node 1 packet type is DV
+time = 40.055 Event_Recv_Pkt_On_Node 5 packet type is DV
+time = 40.055 Event_Recv_Pkt_On_Node 4 packet type is DV
+time = 40.055 Event_Recv_Pkt_On_Node 1 packet type is DV
+time = 40.055 Event_Recv_Pkt_On_Node 6 packet type is DV
+time = 40.055 Event_Recv_Pkt_On_Node 6 packet type is DV
+time = 40.06 Event_Recv_Pkt_On_Node 2 packet type is DV
+time = 40.06 Event_Recv_Pkt_On_Node 5 packet type is DV
+time = 40.065 Event_Recv_Pkt_On_Node 2 packet type is DV
+time = 40.065 Event_Recv_Pkt_On_Node 4 packet type is DV
+time = 40.065 Event_Recv_Pkt_On_Node 4 packet type is DV
+time = 40.065 Event_Recv_Pkt_On_Node 2 packet type is DV
+time = 40.075 Event_Recv_Pkt_On_Node 6 packet type is DV
+time = 40.075 Event_Recv_Pkt_On_Node 1 packet type is DV
+time = 40.075 Event_Recv_Pkt_On_Node 6 packet type is DV
+time = 40.075 Event_Recv_Pkt_On_Node 3 packet type is DV
+time = 40.075 Event_Recv_Pkt_On_Node 1 packet type is DV
+time = 40.075 Event_Recv_Pkt_On_Node 3 packet type is DV
+time = 41 Event_Alarm on node 1
+time = 41 Event_Alarm on node 5
+time = 41 Event_Alarm on node 6
+time = 41 Event_Alarm on node 3
+time = 41 Event_Alarm on node 2
+time = 41 Event_Alarm on node 4
+time = 42 Event_Alarm on node 1
+time = 42 Event_Alarm on node 5
+time = 42 Event_Alarm on node 6
+time = 42 Event_Alarm on node 4
+time = 42 Event_Alarm on node 3
+time = 42 Event_Alarm on node 2
+time = 43 Event_Alarm on node 1
+time = 43 Event_Alarm on node 5
+time = 43 Event_Alarm on node 6
+time = 43 Event_Alarm on node 2
+time = 43 Event_Alarm on node 4
+time = 43 Event_Alarm on node 3
+time = 44 Event_Alarm on node 1
+time = 44 Event_Alarm on node 5
+time = 44 Event_Alarm on node 6
+time = 44 Event_Alarm on node 3
+time = 44 Event_Alarm on node 2
+time = 44 Event_Alarm on node 4
+time = 45 Event_Alarm on node 1
+time = 45 Event_Alarm on node 5
+time = 45 Event_Alarm on node 6
+time = 45 Event_Alarm on node 4
+time = 45 Event_Xmit_Data_Pkt source node 1 destination node 6 packet type is DATA
+1
+destionation: 6 , next hop router: 4 , port: 2 , cost: 40 , last_updated_at: 40025
+destionation: 3 , next hop router: 4 , port: 2 , cost: 30 , last_updated_at: 40025
+destionation: 2 , next hop router: 2 , port: 0 , cost: 20 , last_updated_at: 20
+destionation: 5 , next hop router: 4 , port: 2 , cost: 20 , last_updated_at: 40015
+destionation: 4 , next hop router: 4 , port: 2 , cost: 10 , last_updated_at: 10
+destionation: 1 , next hop router: 1 , port: 0 , cost: 0 , last_updated_at: 0
+
+time = 45 Event_Xmit_Pkt_On_Link (1,4) packet type is DATA
+time = 45 Event_Alarm on node 3
+time = 45 Event_Alarm on node 2
+time = 45.005 Event_Recv_Pkt_On_Node 4 packet type is DATA
+4
+destionation: 6 , next hop router: 5 , port: 3 , cost: 30 , last_updated_at: 40015
+destionation: 2 , next hop router: 2 , port: 1 , cost: 20 , last_updated_at: 20
+destionation: 3 , next hop router: 5 , port: 3 , cost: 20 , last_updated_at: 40015
+destionation: 1 , next hop router: 1 , port: 0 , cost: 10 , last_updated_at: 10
+destionation: 5 , next hop router: 5 , port: 3 , cost: 10 , last_updated_at: 40010
+destionation: 4 , next hop router: 4 , port: 0 , cost: 0 , last_updated_at: 0
+
+time = 45.005 Event_Xmit_Pkt_On_Link (4,5) packet type is DATA
+time = 45.01 Event_Recv_Pkt_On_Node 5 packet type is DATA
+5
+destionation: 2 , next hop router: 4 , port: 1 , cost: 30 , last_updated_at: 40015
+destionation: 6 , next hop router: 6 , port: 2 , cost: 20 , last_updated_at: 20
+destionation: 1 , next hop router: 4 , port: 1 , cost: 20 , last_updated_at: 40015
+destionation: 3 , next hop router: 3 , port: 0 , cost: 10 , last_updated_at: 10
+destionation: 4 , next hop router: 4 , port: 1 , cost: 10 , last_updated_at: 40010
+destionation: 5 , next hop router: 5 , port: 0 , cost: 0 , last_updated_at: 0
+
+time = 45.01 Event_Xmit_Pkt_On_Link (5,6) packet type is DATA
+time = 45.02 Event_Recv_Pkt_On_Node 6 packet type is DATA
+6
+destionation: 2 , next hop router: 5 , port: 1 , cost: 50 , last_updated_at: 40030
+destionation: 4 , next hop router: 5 , port: 1 , cost: 30 , last_updated_at: 40020
+destionation: 3 , next hop router: 5 , port: 1 , cost: 30 , last_updated_at: 30
+destionation: 5 , next hop router: 5 , port: 1 , cost: 20 , last_updated_at: 20
+destionation: 1 , next hop router: 5 , port: 1 , cost: 40 , last_updated_at: 40030
+destionation: 6 , next hop router: 6 , port: 0 , cost: 0 , last_updated_at: 0
+
+Packet is received and freed
+time = 46 Event_Alarm on node 1
+time = 46 Event_Alarm on node 5
+time = 46 Event_Alarm on node 2
+time = 46 Event_Alarm on node 4
+time = 46 Event_Alarm on node 6
+time = 46 Event_Alarm on node 3
+time = 47 Event_Alarm on node 1
+time = 47 Event_Alarm on node 5
+time = 47 Event_Alarm on node 2
+time = 47 Event_Alarm on node 3
+time = 47 Event_Alarm on node 4
+time = 47 Event_Alarm on node 6
+time = 48 Event_Alarm on node 1
+time = 48 Event_Alarm on node 5
+time = 48 Event_Alarm on node 2
+time = 48 Event_Alarm on node 6
+time = 48 Event_Alarm on node 3
+time = 48 Event_Alarm on node 4
+time = 49 Event_Alarm on node 1
+time = 49 Event_Alarm on node 5
+time = 49 Event_Alarm on node 2
+time = 49 Event_Alarm on node 4
+time = 49 Event_Alarm on node 6
+time = 49 Event_Alarm on node 3
+time = 50 Event_Alarm on node 5
+time = 50 Event_Alarm on node 1
+time = 50 Event_Alarm on node 5
+time = 50 Event_Alarm on node 2
+time = 50 Event_Alarm on node 3
+time = 50 Event_Alarm on node 2
+time = 50 Event_Alarm on node 1
+time = 50 Event_Xmit_Pkt_On_Link (5,3) packet type is PING
+time = 50 Event_Alarm on node 4
+time = 50 Event_Xmit_Pkt_On_Link (5,4) packet type is PING
+time = 50 Event_Xmit_Pkt_On_Link (5,6) packet type is PING
+time = 50 Event_Alarm on node 6
+time = 50 Event_Xmit_Pkt_On_Link (1,2) packet type is PING
+time = 50 Event_Xmit_Pkt_On_Link (6,3) packet type is PING
+time = 50 Event_Xmit_Pkt_On_Link (6,5) packet type is PING
+time = 50 Event_Xmit_Pkt_On_Link (1,3) packet type is PING
+time = 50 Event_Alarm on node 3
+time = 50 Event_Xmit_Pkt_On_Link (3,1) packet type is PING
+time = 50 Event_Xmit_Pkt_On_Link (3,2) packet type is PING
+time = 50 Event_Xmit_Pkt_On_Link (3,4) packet type is PING
+time = 50 Event_Xmit_Pkt_On_Link (3,5) packet type is PING
+time = 50 Event_Xmit_Pkt_On_Link (3,6) packet type is PING
+time = 50 Event_Alarm on node 4
+time = 50 Event_Alarm on node 6
+time = 50 Event_Xmit_Pkt_On_Link (1,4) packet type is PING
+time = 50 Event_Xmit_Pkt_On_Link (2,1) packet type is PING
+time = 50 Event_Xmit_Pkt_On_Link (2,3) packet type is PING
+time = 50 Event_Xmit_Pkt_On_Link (2,4) packet type is PING
+time = 50 Event_Xmit_Pkt_On_Link (4,1) packet type is PING
+time = 50 Event_Xmit_Pkt_On_Link (4,2) packet type is PING
+time = 50 Event_Xmit_Pkt_On_Link (4,3) packet type is PING
+time = 50 Event_Xmit_Pkt_On_Link (4,5) packet type is PING
+time = 50.005 Event_Recv_Pkt_On_Node 4 packet type is PING
 Simulator has ended.

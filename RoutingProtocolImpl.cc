@@ -130,7 +130,7 @@ void RoutingProtocolImpl::recv(unsigned short port, void *packet, unsigned short
   {
   // transmit packet
   case DATA:
-    // printTheTable();
+    printTheTable();
     // printThePorts();
     passPacket(packet, size);
     break;
@@ -193,7 +193,6 @@ void RoutingProtocolImpl::processPing(unsigned short port, void *packet, unsigne
     free(packet);
 }
 
-
 // recv PONG and update the neighbor_ports map
 void RoutingProtocolImpl::processPong(unsigned short port, void *packet, unsigned short size)
 {
@@ -212,7 +211,7 @@ void RoutingProtocolImpl::processPong(unsigned short port, void *packet, unsigne
   unsigned int current_time = sys->time();
   unsigned int rtt = current_time - sent_time;
   cout << router_id << " RTT to neighbor " << neighbor_id << ": " << rtt << endl;
-  // printTheTable();
+  
 
   // Update neighbor's last heard time
   neighbors[neighbor_id] = current_time;
@@ -223,6 +222,8 @@ void RoutingProtocolImpl::processPong(unsigned short port, void *packet, unsigne
   // DV
   if (protocol_type == P_DV)
   {
+    // cout<<"DV Table before processing PONG"<<endl;
+    // printTheTable();
     // Update the DV table
     if (dv_table.find(neighbor_id) == dv_table.end())
     {
@@ -258,6 +259,8 @@ void RoutingProtocolImpl::processPong(unsigned short port, void *packet, unsigne
       }
     }
     // Trigger a DV update
+    // cout<<"DV Table after processing PONG"<<endl;
+    // printTheTable();
     sendDvUpdate();
   }
   // LS
@@ -317,6 +320,7 @@ void RoutingProtocolImpl::handleNeighborTimeout()
           cout << "Cleaning neighbor from ports: " << neighbor_id << endl;
           neighbor_ports.erase(neighbor_id);
         }
+        sendDvUpdate();
       }
       // LS protocol cleanup
       else
