@@ -39,7 +39,7 @@ links = [
     (4, 5, 0.005, 0.0),
     (5, 6, 0.010, 0.0),
 ]
-duration = 30000  # 30,000 seconds
+duration = 300000  # 30,000 seconds
 interval = 100  # 100 seconds
 output_file = "test5"  # Output file
 
